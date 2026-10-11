@@ -35,4 +35,4 @@ IDs are written short here. The full form is `Nexus-Physical-01-04-R001`. The st
 
 ## Decisions implemented
 
-SW-01 (OpenCyphal), SW-02 (in-house Cyphal stack), SW-03 (C++17 freestanding subset).
+SW-01 (OpenCyphal), SW-02 (in-house Cyphal stack), SW-03 (C++17 freestanding subset), SW-04 (flash map), SW-05 (SRAM, CCM and FPU).
