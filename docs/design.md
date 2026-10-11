@@ -9,10 +9,12 @@ Boot flow and the update state machine. Written as the design is made. Decisions
 | Flash map | FBL sectors 0 to 4, `0x08000000` to `0x0801FFFF` (128 KB). Application sectors 5 to 11, from `0x08020000` (896 KB). SW-04 |
 | RAM | Main SRAM only, CCM empty. SW-05 |
 | Floating point | None in the FBL. SW-05 |
+| Hand-over from the application | Backup SRAM `0x40024000`, first 512 bytes. SW-06 |
+| Where the FBL runs | From the SRAM, stored in the flash. SW-07 |
 
 ## Open
 
-How a valid application is recognised, the entry rules, the hand-off from the application and where its block sits in the SRAM, how this repository takes a `Nexus-CAN-Utils` tag, NvM and configuration data (Phase 2).
+How a valid application is recognised, the entry rules, the layout of the hand-off record, how this repository takes a `Nexus-CAN-Utils` tag, NvM and configuration data (Phase 2).
 
 ## Sources
 

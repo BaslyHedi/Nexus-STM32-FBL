@@ -20,3 +20,15 @@ APP_FLASH_LENGTH = 896K;
 /* Main SRAM: SRAM1 (112 KB) and SRAM2 (16 KB), contiguous. The CCM at 0x10000000 is left empty. */
 SRAM_ORIGIN = 0x20000000;
 SRAM_LENGTH = 128K;
+
+/*
+ * Backup SRAM: survives a system reset (RM0090 section 7.1.3). The application writes the
+ * hand-off record here before it resets, and the FBL reads it (SW-06). Both images enable
+ * PWREN, PWR_CR.DBP and RCC_AHB1ENR.BKPSRAMEN before touching it.
+ */
+BKPSRAM_ORIGIN  = 0x40024000;
+BKPSRAM_LENGTH  = 4K;
+
+/* First 512 bytes of the backup SRAM are the hand-off record. The rest is not claimed. */
+HANDOFF_ORIGIN  = BKPSRAM_ORIGIN;
+HANDOFF_LENGTH  = 512;

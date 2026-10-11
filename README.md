@@ -10,7 +10,7 @@ Part of NEXUS. The definition, decisions and phase plan live in
 ## What it implements
 
 - Software elements: the bootloader (Nexus-Physical-01-04) and the FBL-Updater (Nexus-Physical-01-05). The trace is in [`docs/requirements.md`](docs/requirements.md).
-- Decisions: SW-01 (OpenCyphal), SW-02 (in-house Cyphal stack), SW-03 (C++17 freestanding subset), SW-04 (flash map), SW-05 (SRAM, CCM and FPU).
+- Decisions: SW-01 (OpenCyphal), SW-02 (in-house Cyphal stack), SW-03 (C++17 freestanding subset), SW-04 (flash map), SW-05 (SRAM, CCM and FPU), SW-06 (hand-off through the backup SRAM), SW-07 (FBL runs from the SRAM).
 
 ## Layout
 
