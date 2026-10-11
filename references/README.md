@@ -1,6 +1,8 @@
 # References
 
-Documents used while writing the FBL, kept locally. PDFs are ignored by git: the repository records the title and nothing else.
+Specifications this repository is built against. **No copy is kept here.** On the author's machine they live in the untracked `vendor/datasheets/` of Nexus-Platform, shared by every repository. On a fresh clone they are fetched by hand: the title and revision are enough to find them.
 
-- Cyphal Specification v1.0, revision 2025-05-16 (OpenCyphal, CC BY 4.0)
-- RM0090, Reference manual, STM32F405/415, STM32F407/417, STM32F427/437 and STM32F429/439 (ST)
+| Document | Revision | Source | Local copy |
+|---|---|---|---|
+| Cyphal Specification v1.0 (CC BY 4.0) | 2025-05-16 | OpenCyphal, opencyphal.org | `Nexus-Platform/vendor/datasheets/Cyphal_Specification.pdf` |
+| RM0090, reference manual for the STM32F405/415, F407/417, F427/437 and F429/439 | not yet fetched | ST | not yet placed |

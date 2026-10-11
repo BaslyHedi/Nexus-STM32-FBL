@@ -1,6 +1,6 @@
 # Cyphal scope of the FBL
 
-What the in-house stack has to do for the download, and nothing more (SW-02). IDs and versions are checked against the Cyphal Specification v1.0, revision 2025-05-16 (a local copy sits untracked in `references/`).
+What the in-house stack has to do for the download, and nothing more (SW-02). IDs and versions are checked against the Cyphal Specification v1.0, revision 2025-05-16 (see [`../references/README.md`](../references/README.md) for where the local copy lives).
 
 | Port | Type version | Role in the FBL | Direction | Multi-frame |
 |---|---|---|---|---|
