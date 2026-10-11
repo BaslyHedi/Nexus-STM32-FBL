@@ -6,3 +6,7 @@ Part of NEXUS. The definition, decisions and phase plan live in
 [Nexus-Platform](https://github.com/BaslyHedi/Nexus-Platform); this repository cites decision IDs (`HW-nn`, `SW-nn`) from there and never restates them.
 
 **Status:** created 2026-10-11, empty on purpose. Phase 1 of the plan is in `system/phases.md` in Nexus-Platform.
+
+## Licence
+
+Apache-2.0 ([`LICENSE`](LICENSE)). Free to use, reuse and adapt as long as you keep the [`NOTICE`](NOTICE) and credit the source.
