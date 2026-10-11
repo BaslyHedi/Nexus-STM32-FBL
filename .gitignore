@@ -1,0 +1,11 @@
+build/
+build-*/
+*.elf
+*.bin
+*.map
+*.o
+.cache/
+compile_commands.json
+
+# vendor and specification documents are not committed, not even here
+*.pdf
