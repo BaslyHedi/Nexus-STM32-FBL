@@ -13,3 +13,13 @@ Boot flow and the update state machine. Written as the design is made. Decisions
 ## Open
 
 How a valid application is recognised, the entry rules, the hand-off from the application and where its block sits in the SRAM, how this repository takes a `Nexus-CAN-Utils` tag, NvM and configuration data (Phase 2).
+
+## Sources
+
+Not committed. On the author's machine they are in the untracked `vendor/datasheets/` of Nexus-Platform.
+
+| Document | Revision | Folder |
+|---|---|---|
+| RM0090, reference manual STM32F405/415, F407/417, F427/437, F429/439 | Rev 22 | `1.2-STM32F407-Discovery/` |
+| DS8626, datasheet STM32F405xx, STM32F407xx | Rev 8 (DocID022152) | `1.2-STM32F407-Discovery/` |
+| Cyphal Specification v1.0 | 2025-05-16 | `4.1-Software/` |

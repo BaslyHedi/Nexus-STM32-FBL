@@ -1,6 +1,6 @@
 # Cyphal scope of the FBL
 
-What the in-house stack has to do for the download, and nothing more (SW-02). IDs and versions are checked against the Cyphal Specification v1.0, revision 2025-05-16 (OpenCyphal, CC BY 4.0). On the author's machine the copy is in the untracked `vendor/datasheets/` of Nexus-Platform.
+What the in-house stack has to do for the download, and nothing more (SW-02). IDs and versions are checked against the Cyphal Specification v1.0, revision 2025-05-16 (OpenCyphal, CC BY 4.0). On the author's machine the copy is in the untracked `vendor/datasheets/4.1-Software/` of Nexus-Platform.
 
 | Port | Type version | Role in the FBL | Direction | Multi-frame |
 |---|---|---|---|---|
