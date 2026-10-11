@@ -27,7 +27,6 @@ Part of NEXUS. The definition, decisions and phase plan live in
 | `third_party/` | pinned CMSIS, test framework, Nexus-CAN-Utils at a tag |
 | `cmake/` | toolchain file, compile options |
 | `docs/` | requirements trace, design, Cyphal scope, coding rules, LED patterns |
-| `references/` | which specifications this repository is built against, and where to find them |
 
 ## Licence
 
