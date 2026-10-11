@@ -32,4 +32,4 @@ Checked by linking stubs on the host:
 - `.init_array` has start and end symbols, so an empty array can be checked in the map file (SW-03).
 - `__fbl_image_end` marks the end of the image in the flash, for the image tool.
 
-The 512-byte vector alignment for 98 vectors is from memory of the Cortex-M4 manual (PM0214), which is not in `vendor/` yet.
+The 512-byte vector alignment is the minimum of PM0214 Rev 10, section 4.4.4: 128 words, for the 98 entries of the F407 (RM0090 Rev 22). The vector table copy must be complete before `VTOR` is written (PM0214 section 4.3.10).

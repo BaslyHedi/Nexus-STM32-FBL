@@ -24,4 +24,5 @@ Not committed. On the author's machine they are in the untracked `vendor/datashe
 |---|---|---|
 | RM0090, reference manual STM32F405/415, F407/417, F427/437, F429/439 | Rev 22 | `1.2-STM32F407-Discovery/` |
 | DS8626, datasheet STM32F405xx, STM32F407xx | Rev 8 (DocID022152) | `1.2-STM32F407-Discovery/` |
+| PM0214, STM32 Cortex-M4 MCUs and MPUs programming manual | Rev 10 | `1.2-STM32F407-Discovery/` |
 | Cyphal Specification v1.0 | 2025-05-16 | `4.1-Software/` |
