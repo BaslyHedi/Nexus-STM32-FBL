@@ -23,7 +23,7 @@ INCLUDE memory_map.ld
 /* Smallest stack the image must leave free at the top of the SRAM. */
 _Min_Stack_Size = 2K;
 
-/* VTOR alignment for 98 vectors (16 system + 82 interrupts) is 512 bytes (SW-07, to confirm). */
+/* VTOR alignment for 98 vectors (16 system + 82 interrupts) is 512 bytes (SW-07, PM0214 Rev 10 section 4.4.4). */
 _Vector_Alignment = 512;
 
 MEMORY

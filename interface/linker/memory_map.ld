@@ -5,8 +5,8 @@
  * Symbols only, so each image declares its own MEMORY. Included with
  * INCLUDE memory_map.ld. The build passes -L interface/linker BEFORE -T, because ld only
  * searches the -L paths it has already seen when it reads the script.
- * interface/include/nexus_fbl/memory_map.h carries the same numbers for C and C++.
- * Change one, change both.
+ * interface/include/nexus_fbl/memory_map.h will carry the same numbers for C and C++
+ * (not written yet). When it exists, change one, change both.
  */
 
 /* FBL: sectors 0 to 4 (4 x 16 KB + 64 KB). The reset vector is read here. */
