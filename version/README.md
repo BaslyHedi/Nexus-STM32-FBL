@@ -23,7 +23,7 @@ The version record of the image: 64 bytes at a fixed address, readable with `str
 | `version.hpp.in` | template; CMake generates `build/generated/version/version.hpp` (not committed) with the strings, the numbers and the `Record` struct |
 | `version.cpp` | builds the one `kRecord` at compile time and puts it in the section `.version` |
 
-The values come from `cmake/project-settings.cmake`. `cmake/version.cmake` fails the configure when a value does not fit the layout: a version part above 99, a platform name that is not 5 characters, a platform version that is not 2.
+The values come from `cmake/project-settings.cmake`; the field widths are written once, in `cmake/version.cmake`, and `version.hpp.in` takes them from there. `cmake/version.cmake` fails the configure when a value does not fit the layout: a version part above 99, a platform name that is not 5 characters, a platform version that is not 2.
 
 ## Where it sits
 

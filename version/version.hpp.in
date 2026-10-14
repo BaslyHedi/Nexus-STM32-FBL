@@ -22,13 +22,13 @@ inline constexpr std::uint8_t kMajor = @NEXUS_VERSION_MAJOR@;
 inline constexpr std::uint8_t kMinor = @NEXUS_VERSION_MINOR@;
 inline constexpr std::uint8_t kPatch = @NEXUS_VERSION_PATCH@;
 
-// Layout. The field widths are fixed; cmake/version.cmake checks the settings against them.
-inline constexpr std::size_t kRecordSize      = 64;
-inline constexpr std::size_t kTypeSize        = 3;
-inline constexpr std::size_t kPlatformSize    = 5;
-inline constexpr std::size_t kPlatformVerSize = 2;
-inline constexpr std::size_t kSwVersionSize   = 8;
-inline constexpr std::size_t kReservedSize    = 42;
+// Layout. The widths are written once, in cmake/version.cmake, which checks the settings against them.
+inline constexpr std::size_t kRecordSize      = @NEXUS_RECORD_SIZE@;
+inline constexpr std::size_t kTypeSize        = @NEXUS_RECORD_TYPE_SIZE@;
+inline constexpr std::size_t kPlatformSize    = @NEXUS_RECORD_PLATFORM_SIZE@;
+inline constexpr std::size_t kPlatformVerSize = @NEXUS_RECORD_PLATFORM_VER_SIZE@;
+inline constexpr std::size_t kSwVersionSize   = @NEXUS_RECORD_SW_VERSION_SIZE@;
+inline constexpr std::size_t kReservedSize    = @NEXUS_RECORD_RESERVED_SIZE@;
 inline constexpr std::uint8_t kReservedFill   = 0xFF;  // erased flash: a later field can be programmed in
 
 // "FBL_Nexus_v1_00-01-00" followed by a NUL, then the reserved bytes.
@@ -44,7 +44,7 @@ struct Record {
     std::uint8_t reserved[kReservedSize];
 };
 
-static_assert(sizeof(Record) == kRecordSize, "the version record is 64 bytes");
+static_assert(sizeof(Record) == kRecordSize, "the version record has its set size");
 static_assert(sizeof(kSoftwareType) == kTypeSize + 1, "software type is 3 characters");
 static_assert(sizeof(kPlatformName) == kPlatformSize + 1, "platform name is 5 characters");
 static_assert(sizeof(kPlatformVersion) == kPlatformVerSize + 1, "platform version is 2 characters");
