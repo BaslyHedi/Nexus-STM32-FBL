@@ -39,6 +39,9 @@ void Tick::init(std::uint32_t coreClockHz)
 {
     /* The counter counts LOAD down to 0, so LOAD + 1 cycles make one interrupt. 24 bits. */
     SysTick->LOAD = (coreClockHz / 1000U) - 1U;
+    /* The lowest priority: an interrupt that cannot wait, such as CAN reception, preempts the
+     * tick, and a tick held back for a while is still counted once it runs. */
+    NVIC_SetPriority(SysTick_IRQn, (1UL << __NVIC_PRIO_BITS) - 1UL);
     /* Any write clears the counter and COUNTFLAG. */
     SysTick->VAL = 0U;
     /* Processor clock, interrupt on, counter on. */

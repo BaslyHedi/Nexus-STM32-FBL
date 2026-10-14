@@ -67,8 +67,9 @@ int main()
         const std::uint32_t nowMs = Tick::now();
 
         /* The new pattern starts at the scene boundary, not when the loop notices it: no drift.
-         * The write follows start, because update only reports a change from the start mask. */
-        if ((nowMs - sceneStartMs) >= demo[scene].durationMs) {
+         * The write follows start, because update only reports a change from the start mask.
+         * while and not if: after a stall longer than a scene, the demo is on time in one pass. */
+        while ((nowMs - sceneStartMs) >= demo[scene].durationMs) {
             sceneStartMs += demo[scene].durationMs;
             scene = (scene + 1U) % demoSize;
             player.start(*demo[scene].pattern, sceneStartMs);

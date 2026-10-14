@@ -19,6 +19,7 @@
  */
 
 #include <cstddef>
+#include <cstdint>
 
 extern "C" {
 void* memcpy(void* dest, const void* src, std::size_t count);
@@ -41,7 +42,8 @@ extern "C" void* memmove(void* dest, const void* src, std::size_t count)
 {
     auto* const d = static_cast<unsigned char*>(dest);
     const auto* const s = static_cast<const unsigned char*>(src);
-    if (d < s) {
+    /* < on two pointers is only defined inside one array: compare the addresses as integers. */
+    if (reinterpret_cast<std::uintptr_t>(d) < reinterpret_cast<std::uintptr_t>(s)) {
         for (std::size_t i = 0U; i < count; ++i) {
             d[i] = s[i];
         }
