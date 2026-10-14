@@ -7,8 +7,10 @@
 function(nexus_post_build target)
   set(_elf "$<TARGET_FILE:${target}>")
 
-  # The check comes first: a failed build must not leave an SREC behind that could be flashed.
+  # The old SREC files are removed and the check comes before the new ones: a failed build must
+  # not leave an SREC behind that could be flashed, neither a new one nor one of the last good build.
   add_custom_command(TARGET ${target} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E rm -f "${NEXUS_OUTPUT_NAME}.srec" "${NEXUS_OUTPUT_NAME_VERSIONED}.srec"
     COMMAND ${CMAKE_COMMAND}
       -DREADELF=${NEXUS_READELF} -DELF=${_elf}
       -P "${CMAKE_SOURCE_DIR}/cmake/check-init-array.cmake"

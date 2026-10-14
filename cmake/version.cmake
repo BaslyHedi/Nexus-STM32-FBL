@@ -6,14 +6,13 @@ if(NOT NEXUS_SW_TYPE MATCHES "^(FBL|APP)$")
   message(FATAL_ERROR "NEXUS_SW_TYPE must be FBL or APP, got '${NEXUS_SW_TYPE}'")
 endif()
 
-string(LENGTH "${NEXUS_PLATFORM_NAME}" _name_length)
-if(NOT _name_length EQUAL 5)
-  message(FATAL_ERROR "NEXUS_PLATFORM_NAME must be 5 characters (the record has a fixed layout), got '${NEXUS_PLATFORM_NAME}'")
+# Letters and digits only: the value goes into a string literal and into file names, and "_" is the separator.
+if(NOT NEXUS_PLATFORM_NAME MATCHES "^[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]$")
+  message(FATAL_ERROR "NEXUS_PLATFORM_NAME must be 5 letters or digits (the record has a fixed layout), got '${NEXUS_PLATFORM_NAME}'")
 endif()
 
-string(LENGTH "${NEXUS_PLATFORM_VERSION}" _platform_version_length)
-if(NOT _platform_version_length EQUAL 2)
-  message(FATAL_ERROR "NEXUS_PLATFORM_VERSION must be 2 characters (the record has a fixed layout), got '${NEXUS_PLATFORM_VERSION}'")
+if(NOT NEXUS_PLATFORM_VERSION MATCHES "^[A-Za-z0-9][A-Za-z0-9]$")
+  message(FATAL_ERROR "NEXUS_PLATFORM_VERSION must be 2 letters or digits (the record has a fixed layout), got '${NEXUS_PLATFORM_VERSION}'")
 endif()
 
 # Each version part is written with two digits: 0 -> 00, 12 -> 12.

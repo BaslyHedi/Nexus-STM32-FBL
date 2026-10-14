@@ -28,14 +28,15 @@ Needs `arm-none-eabi-gcc` (tested with 14.2.1), CMake 3.25 or newer and Ninja. T
 | `compile-options.cmake` | the `nexus_options` interface library: C++17 and the freestanding subset (SW-03), warnings, link options; and `nexus_use_linker_script()` |
 | `version.cmake` | checks the settings against the version record layout, builds the strings, generates `version.hpp` |
 | `post-build.cmake` | after the link: the `.init_array` check, the SREC files, the size report |
-| `check-init-array.cmake` | fails the build when `.init_array` is not empty (SW-03) |
+| `check-init-array.cmake` | fails the build when `.preinit_array`, `.init_array` or `.ctors` is not empty, or cannot be read (SW-03) |
 
 Each folder with sources has its own `CMakeLists.txt` (`version/`, `drivers/stm32f407/startup/`, `src/boot/`, `third_party/`).
 
 ## Things to know
 
 - **The two SREC files differ only in name.** The S0 header record carries the file name, so `objcopy` runs twice, from `build/output/` with a relative name. With a full path the header would hold the path of the build machine.
-- **The check comes before the SREC files.** A build that fails the `.init_array` check leaves no SREC.
+- **The check comes before the SREC files.** The old SREC files are deleted first, so a build that fails the constructor check leaves no SREC, neither a new one nor one of the last good build.
+- **Strict `-std=c++17`.** `CMAKE_CXX_EXTENSIONS` is off: GCC 14 defaults to `gnu++17`, and CMake then adds no `-std` flag at all.
 - **Start-up code and the version record are OBJECT libraries.** Nothing calls them (the linker script's `ENTRY` and the record's `KEEP` are the only references), so a static library would drop them.
 - **`-nostdlib` and `-lgcc`.** There is no C library: a call to `malloc`, `operator new` or `memcpy` fails to link, which is the intent (SW-03).
 - **Warnings are errors** by default. Switch off with `-DNEXUS_WARNINGS_AS_ERRORS=OFF` while experimenting.

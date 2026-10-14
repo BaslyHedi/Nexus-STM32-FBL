@@ -4,9 +4,13 @@
 
 option(NEXUS_WARNINGS_AS_ERRORS "Treat warnings as errors" ON)
 
+# -std=c++17 and not -std=gnu++17. GCC 14 defaults to gnu++17, so without this CMake adds no -std flag at all.
+# The variable sets CXX_EXTENSIONS on every target created after this line.
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 add_library(nexus_options INTERFACE)
 
-# C++17, no compiler extensions: -std=c++17 and not -std=gnu++17 (SW-03).
+# C++17 (SW-03).
 target_compile_features(nexus_options INTERFACE cxx_std_17)
 
 target_compile_options(nexus_options INTERFACE
@@ -45,8 +49,16 @@ target_link_options(nexus_options INTERFACE
   -nostdlib
   -Wl,--gc-sections
   -Wl,--print-memory-usage
-  -Wl,--no-warn-rwx-segments
 )
+
+# binutils 2.39 and newer warn about the RWX segment of the SRAM image (it is on purpose, the code runs
+# from the SRAM) and know the option that silences it. Older ones stop at an unknown option.
+# Asked of the linker itself: the try-compile above is a static library and would not test a link option.
+execute_process(COMMAND ${CMAKE_CXX_COMPILER} -Wl,--help
+  OUTPUT_VARIABLE _nexus_ld_help ERROR_QUIET)
+if(_nexus_ld_help MATCHES "no-warn-rwx-segments")
+  target_link_options(nexus_options INTERFACE -Wl,--no-warn-rwx-segments)
+endif()
 target_link_libraries(nexus_options INTERFACE gcc)
 
 # Linker script and its include path, in this order: ld only searches the -L paths

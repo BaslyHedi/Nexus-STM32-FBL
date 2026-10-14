@@ -49,6 +49,7 @@ static_assert(sizeof(kSoftwareType) == kTypeSize + 1, "software type is 3 charac
 static_assert(sizeof(kPlatformName) == kPlatformSize + 1, "platform name is 5 characters");
 static_assert(sizeof(kPlatformVersion) == kPlatformVerSize + 1, "platform version is 2 characters");
 static_assert(sizeof(kSoftwareVersion) == kSwVersionSize + 1, "software version is AA-BB-CC");
+static_assert(sizeof(kRecordString) == offsetof(Record, terminator) + 1U, "the record string is the text of the record");
 
 // Defined in version.cpp, in the section .version, which fbl.ld places at 0x08000200.
 extern const Record kRecord;

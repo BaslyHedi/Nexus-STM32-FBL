@@ -27,6 +27,6 @@ The values come from `cmake/project-settings.cmake`. `cmake/version.cmake` fails
 
 ## Where it sits
 
-`interface/linker/memory_map.ld` sets `VERSION_OFFSET = 0x200` and `VERSION_SIZE = 64`. `linker/fbl.ld` places `.version` there, after the vector table (392 bytes) and before `.boot_text`, and fails the link if the record is missing, not 64 bytes or not at that address. The gap between the table and the record is never programmed. The offset is the same for the application (`0x08020200`), so a tool reads either image the same way; the application's linker script has to leave the slot free (SW-08, open).
+`interface/linker/memory_map.ld` sets `VERSION_OFFSET = 0x200` and `VERSION_SIZE = 64`. `linker/fbl.ld` places `.version` there, after the vector table (392 bytes) and before `.boot_text`, and fails the link if the record is missing, not 64 bytes or not at that address. The gap between the table and the record is never programmed. The offset is the same for the application (`0x08020200`), so a tool reads either image the same way; the application's linker script has to leave the slot free (SW-08; the application side is still to do).
 
 The record is not copied to the SRAM and the FBL does not read it. The layout is a contract with the application and the image tool, decided in SW-08. The application follows the same pattern later, on its own side.

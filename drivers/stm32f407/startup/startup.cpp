@@ -34,6 +34,7 @@ int callMain() __asm__("main");
 [[noreturn]] void Reset_Handler();
 [[noreturn]] void Reset_Main();
 void Default_Handler();
+void Fault_Handler() noexcept;
 }
 
 namespace {
@@ -80,12 +81,14 @@ union VectorEntry {
 NEXUS_IRQ_HANDLERS(NEXUS_DECLARE_WEAK_IRQ)
 
 // System handlers (PM0214 table 12). Reset has its own definition below.
+// NMI and the faults default to Fault_Handler, which is in the flash: until the copy is done,
+// the table is the one in the flash and a handler in the SRAM would be unprogrammed memory.
 extern "C" {
-void NMI_Handler() __attribute__((weak, alias("Default_Handler")));
-void HardFault_Handler() __attribute__((weak, alias("Default_Handler")));
-void MemManage_Handler() __attribute__((weak, alias("Default_Handler")));
-void BusFault_Handler() __attribute__((weak, alias("Default_Handler")));
-void UsageFault_Handler() __attribute__((weak, alias("Default_Handler")));
+void NMI_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
+void HardFault_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
+void MemManage_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
+void BusFault_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
+void UsageFault_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
 void SVC_Handler() __attribute__((weak, alias("Default_Handler")));
 void DebugMon_Handler() __attribute__((weak, alias("Default_Handler")));
 void PendSV_Handler() __attribute__((weak, alias("Default_Handler")));
@@ -155,6 +158,15 @@ extern "C" {
 
 // Reached by any interrupt without a handler. It is in .text, so in the SRAM at run time (SW-07).
 void Default_Handler()
+{
+    for (;;) {
+    }
+}
+
+// NMI and the faults that no driver handles. In .boot_text, so it is valid from the first
+// instruction after reset. After the jump to main it is still the handler of a fault nobody handles,
+// and a loop is all there is to do then; a flash erase in progress only delays that loop.
+[[gnu::section(".boot_text")]] void Fault_Handler() noexcept
 {
     for (;;) {
     }
