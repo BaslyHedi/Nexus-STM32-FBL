@@ -6,5 +6,6 @@
         "buildPreset": { "statusBarVisibility": "visible" },
         "buildTarget": { "statusBarVisibility": "visible" },
         "build": { "statusBarVisibility": "visible" }
-    }
+    },
+    "cortex-debug.variableUseNaturalFormat": false
 }
