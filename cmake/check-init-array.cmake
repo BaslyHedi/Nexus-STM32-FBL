@@ -1,8 +1,16 @@
-# Fails the build when the image has constructors to run (SW-03): the constructor tables have to be empty.
-# Run as: cmake -DREADELF=<readelf> -DELF=<elf> -P check-init-array.cmake
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Hedi Basly
 #
-# Fails closed: a table that is named in the readelf output but whose line cannot be read is an error,
-# not an empty table. A table missing altogether is empty.
+# File:      cmake/check-init-array.cmake
+# Brief:     Fails the build when the image has constructors to run.
+# Element:   Nexus-Physical-01-04 (bootloader)
+# Decisions: SW-03
+#
+# The constructor tables have to be empty. Run as: cmake -DREADELF=<readelf> -DELF=<elf> -P check-
+# init-array.cmake
+#
+# Fails closed: a table that is named in the readelf output but whose line cannot be read is an
+# error, not an empty table. A table missing altogether is empty.
 
 execute_process(
   COMMAND ${READELF} --section-headers --wide ${ELF}

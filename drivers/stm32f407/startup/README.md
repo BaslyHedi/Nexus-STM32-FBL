@@ -16,5 +16,6 @@
 
 - `Reset_Main` and everything it calls before the copy must be in `.boot_text` or inlined. A helper outside it lands in `.ram_image`, which is not copied yet. The loops are `always_inline` and the file is built with `-fno-tree-loop-distribute-patterns`, so GCC does not turn them into `memcpy` and `memset` calls.
 - The call to `main` crosses from the flash into the SRAM, further than a `bl` reaches. The linker adds a veneer (`__main_veneer`); check in the disassembly that it is in `.boot_text`:
-  `arm-none-eabi-objdump -d -j .boot_text build/output/FBL_Nexus.elf`
+  `arm-none-eabi-objdump -d -j .boot_text build/output/FBL_Nexus.elf`, and the same for `FBL_Nexus_debug.elf`.
+  The debug launch stops the core at `__main_veneer`, after the copy, before it sets any breakpoint in the SRAM (`tools/README.md`). A change that removes or renames the veneer breaks the launch.
 - `.init_array` is expected to be empty. The build fails if it is not (`cmake/check-init-array.cmake`).

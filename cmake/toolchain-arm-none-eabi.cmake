@@ -1,4 +1,11 @@
-# Cross-compilation for the STM32F407 (Cortex-M4, no FPU: SW-05).
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Hedi Basly
+#
+# File:      cmake/toolchain-arm-none-eabi.cmake
+# Brief:     Cross-compilation for the STM32F407 (Cortex-M4, no FPU).
+# Element:   Nexus-Physical-01-04 (bootloader)
+# Decisions: SW-05
+#
 # Passed with -DCMAKE_TOOLCHAIN_FILE, which CMakePresets.json does.
 
 set(CMAKE_SYSTEM_NAME Generic)

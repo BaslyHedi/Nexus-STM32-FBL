@@ -1,0 +1,60 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "FBL: build",
+            "detail": "Both variants, with the fbl preset",
+            "type": "process",
+            "command": "cmake",
+            "args": ["--build", "--preset", "fbl"],
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "absolute"
+            }
+        },
+        {
+            "label": "FBL: flash release (SREC)",
+            "detail": "FBL_Nexus.srec through the ST-LINK, sector erase, verify, reset",
+            "type": "process",
+            "command": "openocd",
+            "args": [
+                "-f", "tools/openocd/fbl.cfg",
+                "-f", "tools/openocd/connect-under-reset.cfg",
+                "-c", "program build/output/FBL_Nexus.srec verify reset exit"
+            ],
+            "options": { "cwd": "${workspaceFolder}" },
+            "dependsOn": "FBL: build",
+            "problemMatcher": []
+        },
+        {
+            "label": "FBL: flash debug (ELF)",
+            "detail": "FBL_Nexus_debug.elf through the ST-LINK, sector erase, verify, reset",
+            "type": "process",
+            "command": "openocd",
+            "args": [
+                "-f", "tools/openocd/fbl.cfg",
+                "-f", "tools/openocd/connect-under-reset.cfg",
+                "-c", "program build/output/FBL_Nexus_debug.elf verify reset exit"
+            ],
+            "options": { "cwd": "${workspaceFolder}" },
+            "dependsOn": "FBL: build",
+            "problemMatcher": []
+        },
+        {
+            "label": "FBL: read version record",
+            "detail": "64 bytes at 0x08000200, without stopping the core",
+            "type": "process",
+            "command": "openocd",
+            "args": [
+                "-f", "tools/openocd/fbl.cfg",
+                "-c", "init",
+                "-c", "echo \"[mdb 0x08000200 64]\"",
+                "-c", "shutdown"
+            ],
+            "options": { "cwd": "${workspaceFolder}" },
+            "problemMatcher": []
+        }
+    ]
+}

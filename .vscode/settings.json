@@ -1,0 +1,11 @@
+{
+    "cmake.useCMakePresets": "always",
+    "cmake.options.statusBarVisibility": "hidden",
+    "cmake.options.advanced": {
+        "configurePreset": { "statusBarVisibility": "visible" },
+        "buildPreset": { "statusBarVisibility": "visible" },
+        "buildTarget": { "statusBarVisibility": "visible" },
+        "build": { "statusBarVisibility": "visible" }
+    },
+    "cortex-debug.variableUseNaturalFormat": false
+}

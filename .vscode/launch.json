@@ -1,0 +1,113 @@
+{
+    /*
+     * Cortex-Debug through OpenOCD and the on-board ST-LINK (tools/openocd/).
+     *
+     * The FBL runs from the SRAM (SW-07). A Cortex-M4 breakpoint unit only reaches the code region
+     * below 0x20000000, so a breakpoint in the SRAM is a BKPT instruction that GDB writes there.
+     * Written before the start-up copy, the copy overwrites it. So after the load and after every
+     * restart or reset, the post commands below run the start-up code first: OpenOCD stops the
+     * core on a hardware breakpoint at __main_veneer, in the flash, after the copy and before main.
+     * Cortex-Debug sets the breakpoints of the editor only after that. tools/README.md has more.
+     */
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "FBL debug variant: flash and debug",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/output/FBL_Nexus_debug.elf",
+            "configFiles": [
+                "tools/openocd/fbl.cfg",
+                "tools/openocd/connect-under-reset.cfg"
+            ],
+            "gdbPath": "gdb-multiarch",
+            "device": "STM32F407VG",
+            "preLaunchTask": "FBL: build",
+            "runToEntryPoint": "main",
+            "postLaunchCommands": [
+                "eval \"monitor bp 0x%08x 2 hw\", (unsigned int)&__main_veneer",
+                "monitor resume",
+                "monitor wait_halt 2000",
+                "eval \"monitor rbp 0x%08x\", (unsigned int)&__main_veneer",
+                "maintenance flush register-cache"
+            ],
+            "postRestartCommands": [
+                "eval \"monitor bp 0x%08x 2 hw\", (unsigned int)&__main_veneer",
+                "monitor resume",
+                "monitor wait_halt 2000",
+                "eval \"monitor rbp 0x%08x\", (unsigned int)&__main_veneer",
+                "maintenance flush register-cache"
+            ],
+            "postResetCommands": [
+                "eval \"monitor bp 0x%08x 2 hw\", (unsigned int)&__main_veneer",
+                "monitor resume",
+                "monitor wait_halt 2000",
+                "eval \"monitor rbp 0x%08x\", (unsigned int)&__main_veneer",
+                "maintenance flush register-cache"
+            ]
+        },
+        {
+            "name": "FBL release: flash and debug",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/output/FBL_Nexus.elf",
+            "configFiles": [
+                "tools/openocd/fbl.cfg",
+                "tools/openocd/connect-under-reset.cfg"
+            ],
+            "gdbPath": "gdb-multiarch",
+            "device": "STM32F407VG",
+            "preLaunchTask": "FBL: build",
+            "runToEntryPoint": "main",
+            "postLaunchCommands": [
+                "eval \"monitor bp 0x%08x 2 hw\", (unsigned int)&__main_veneer",
+                "monitor resume",
+                "monitor wait_halt 2000",
+                "eval \"monitor rbp 0x%08x\", (unsigned int)&__main_veneer",
+                "maintenance flush register-cache"
+            ],
+            "postRestartCommands": [
+                "eval \"monitor bp 0x%08x 2 hw\", (unsigned int)&__main_veneer",
+                "monitor resume",
+                "monitor wait_halt 2000",
+                "eval \"monitor rbp 0x%08x\", (unsigned int)&__main_veneer",
+                "maintenance flush register-cache"
+            ],
+            "postResetCommands": [
+                "eval \"monitor bp 0x%08x 2 hw\", (unsigned int)&__main_veneer",
+                "monitor resume",
+                "monitor wait_halt 2000",
+                "eval \"monitor rbp 0x%08x\", (unsigned int)&__main_veneer",
+                "maintenance flush register-cache"
+            ]
+        },
+        {
+            /* No load and no reset: looks at what runs. The image on the chip must be this variant. */
+            "name": "FBL debug variant: attach",
+            "type": "cortex-debug",
+            "request": "attach",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/output/FBL_Nexus_debug.elf",
+            "configFiles": ["tools/openocd/fbl.cfg"],
+            "gdbPath": "gdb-multiarch",
+            "device": "STM32F407VG"
+        },
+        {
+            /* No load and no reset: looks at what runs. The image on the chip must be this variant. */
+            "name": "FBL release: attach",
+            "type": "cortex-debug",
+            "request": "attach",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/output/FBL_Nexus.elf",
+            "configFiles": ["tools/openocd/fbl.cfg"],
+            "gdbPath": "gdb-multiarch",
+            "device": "STM32F407VG"
+        }
+    ]
+}
