@@ -54,17 +54,17 @@ The same header, then the include guard: `NEXUS_` and the path from the reposito
  */
 
 /**
- * @file      interface/include/nexus_fbl/memory_map.hpp
+ * @file      src/<module>/<name>.hpp
  * @brief     One sentence: what the file is.
  *
  * Element:   Nexus-Physical-01-04 (bootloader)
- * Decisions: SW-04
+ * Decisions: none
  *
  * Optional details.
  */
 
-#ifndef NEXUS_INTERFACE_INCLUDE_NEXUS_FBL_MEMORY_MAP_HPP
-#define NEXUS_INTERFACE_INCLUDE_NEXUS_FBL_MEMORY_MAP_HPP
+#ifndef NEXUS_SRC_<MODULE>_<NAME>_HPP
+#define NEXUS_SRC_<MODULE>_<NAME>_HPP
 
 #endif
 ```

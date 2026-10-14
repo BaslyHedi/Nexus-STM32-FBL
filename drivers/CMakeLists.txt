@@ -8,8 +8,8 @@
 #
 # One file for the whole folder: paths are relative to drivers/.
 
-# Start-up code: an OBJECT library for the same reason as nexus_version, the linker script's ENTRY
-# is the only reference. One per variant, compiled with that variant's options.
+# Start-up code: an OBJECT library for the same reason as the version record: the linker script's
+# ENTRY is the only reference. One per variant, compiled with that variant's options.
 foreach(_variant IN LISTS NEXUS_VARIANTS)
   add_library(nexus_startup_${_variant} OBJECT stm32f407/startup/startup.cpp)
   target_link_libraries(nexus_startup_${_variant} PRIVATE nexus_options nexus_variant_${_variant} nexus_cmsis)

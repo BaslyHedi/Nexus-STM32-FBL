@@ -209,7 +209,7 @@ void Default_Handler()
 /*
  * Everything here runs from the flash and uses nothing from .ram_image until the copy is done.
  * The call to main crosses from the flash into the SRAM, beyond the reach of a bl: the linker adds a
- * veneer, which has to stay in .boot_text (checked in the disassembly, cmake/README.md).
+ * veneer, which has to stay in .boot_text (checked in the disassembly, drivers/stm32f407/startup/README.md).
  */
 [[noreturn, gnu::section(".boot_text"), gnu::used]] void Reset_Main()
 {
