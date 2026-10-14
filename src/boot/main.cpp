@@ -14,14 +14,18 @@
  */
 
 #include <cstdint>
+
 #include "stm32f407/leds/leds.hpp"
 #include "stm32f407/tick/tick.hpp"
+#include "leds/patterns.hpp"
+#include "leds/player.hpp"
 
 /* With -ffreestanding main is not special to the compiler, so -Wmissing-declarations wants this. */
 int main();
 
 int main()
 {
+    using nexus::fbl::leds::Player;
     using nexus::fbl::stm32f407::Leds;
     using nexus::fbl::stm32f407::Tick;
 
@@ -31,15 +35,13 @@ int main()
     Leds::init();
     Tick::init(coreClockHz);
 
-    std::uint32_t mask = 0xFu;
-    std::uint32_t start = Tick::now();
+    Player player;
+    player.start(nexus::fbl::leds::idle, Tick::now());
+    Leds::write(player.mask());
 
     for (;;) {
-        if ((Tick::now() - start) >= 1000U) {
-            start += 1000U;
-            mask ^= 0xFu;
-            Leds::write(mask);
+        if (player.update(Tick::now())) {
+            Leds::write(player.mask());
         }
     }
-
 }

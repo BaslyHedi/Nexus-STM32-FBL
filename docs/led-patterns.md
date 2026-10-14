@@ -24,20 +24,23 @@ Discovery board user LEDs, active high. Seen from above, PD12 to PD15 go round c
 
 ## FBL idle: burst chase
 
-One LED at a time. It flashes four times, then the next LED takes over, clockwise: green, orange, red, blue, then green again. The others stay off.
+One LED at a time. It flashes six times, then the next LED takes over, clockwise: green, orange, red, blue, then green again. The others stay off.
 
 One LED's burst:
 
 | Step | LED | Time |
 |---|---|---|
-| 1 | on | 100 ms |
-| 2 | off | 50 ms |
-| 3 | on | 100 ms |
-| 4 | off | 50 ms |
-| 5 | on | 100 ms |
-| 6 | off | 50 ms |
-| 7 | on | 100 ms |
-| 8 | off | 50 ms |
-| 9 | off | 500 ms |
+| 1 | on | 70 ms |
+| 2 | off | 30 ms |
+| 3 | on | 70 ms |
+| 4 | off | 30 ms |
+| 5 | on | 70 ms |
+| 6 | off | 30 ms |
+| 7 | on | 70 ms |
+| 8 | off | 30 ms |
+| 9 | on | 70 ms |
+| 10 | off | 30 ms |
+| 11 | on | 70 ms |
+| 12 | off | 230 ms |
 
-A burst lasts 1100 ms, a full turn of the four LEDs 4400 ms.
+A burst lasts 800 ms, a full turn of the four LEDs 3200 ms. The table is `idleSteps` in `src/leds/patterns.hpp`, row for row; `static_assert`s there check the number of steps and the 800 ms.
