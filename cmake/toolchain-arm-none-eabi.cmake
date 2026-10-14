@@ -13,11 +13,10 @@ set(CMAKE_SYSTEM_PROCESSOR arm)
 
 set(NEXUS_TOOLCHAIN_PREFIX arm-none-eabi-)
 
-find_program(NEXUS_CXX_COMPILER ${NEXUS_TOOLCHAIN_PREFIX}g++ REQUIRED)
-set(CMAKE_CXX_COMPILER ${NEXUS_CXX_COMPILER})
+find_program(CMAKE_CXX_COMPILER ${NEXUS_TOOLCHAIN_PREFIX}g++ REQUIRED)
 
 # The tools of the same toolchain, found next to the compiler.
-get_filename_component(_nexus_bin_dir ${NEXUS_CXX_COMPILER} DIRECTORY)
+get_filename_component(_nexus_bin_dir ${CMAKE_CXX_COMPILER} DIRECTORY)
 foreach(_tool OBJCOPY SIZE READELF)
   string(TOLOWER ${_tool} _name)
   find_program(NEXUS_${_tool} ${NEXUS_TOOLCHAIN_PREFIX}${_name}
