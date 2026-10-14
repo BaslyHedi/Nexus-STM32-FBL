@@ -19,7 +19,7 @@ Part of NEXUS. The definition, decisions and phase plan live in
 | `interface/` | memory map, image header, hand-off record: the contract with the application |
 | `cyphal/` | the in-house Cyphal stack, independent of the rest |
 | `src/` | the bootloader: `boot`, `update`, `node`, `leds`, `port` |
-| `drivers/stm32f407/` | register-level drivers and startup code |
+| `drivers/` | `startup` (vector table, reset sequence), `stm32f407` (register-level drivers) |
 | `updater/` | the FBL-Updater image |
 | `linker/` | linker scripts |
 | `tests/` | host tests of the bootloader logic |

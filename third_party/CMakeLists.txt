@@ -7,7 +7,7 @@
 # Decisions: none
 #
 # SYSTEM include paths: warnings inside ST and Arm headers are not ours. system_stm32f4xx.c and ST's
-# startup file are not compiled (drivers/stm32f407/startup/README.md).
+# startup file are not compiled (drivers/startup/README.md).
 
 set(_core_include   ${CMAKE_CURRENT_SOURCE_DIR}/cmsis_core/Include)
 set(_device_include ${CMAKE_CURRENT_SOURCE_DIR}/cmsis_device_f4/Include)
