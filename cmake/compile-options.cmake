@@ -1,6 +1,13 @@
-# Compiler and linker options shared by every target of the image.
-# Creates the INTERFACE library nexus_options; a target takes the options by linking it.
-# The CPU flags are in the toolchain file.
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Hedi Basly
+#
+# File:      cmake/compile-options.cmake
+# Brief:     Compiler and linker options shared by every target of the image.
+# Element:   Nexus-Physical-01-04 (bootloader)
+# Decisions: SW-03
+#
+# Creates the INTERFACE library nexus_options; a target takes the options by linking it. The CPU
+# flags are in the toolchain file.
 
 option(NEXUS_WARNINGS_AS_ERRORS "Treat warnings as errors" ON)
 

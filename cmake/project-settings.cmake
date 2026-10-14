@@ -1,5 +1,12 @@
-# Project settings: names, version and file names. Included before project().
-# Nothing else in the build hard-codes these values.
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Hedi Basly
+#
+# File:      cmake/project-settings.cmake
+# Brief:     Project settings: names, version, variants and file names.
+# Element:   Nexus-Physical-01-04 (bootloader)
+# Decisions: SW-08
+#
+# Included before project(). Nothing else in the build hard-codes these values.
 
 # Software identity. The record in the image is built from these (version/README.md).
 set(NEXUS_SW_TYPE          "FBL")    # FBL or APP, 3 characters

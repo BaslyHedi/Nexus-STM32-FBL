@@ -1,5 +1,13 @@
-# CMSIS, used header-only. SYSTEM include paths: warnings inside ST and Arm headers are not ours.
-# system_stm32f4xx.c and ST's startup file are not compiled (drivers/stm32f407/startup/README.md).
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Hedi Basly
+#
+# File:      third_party/CMakeLists.txt
+# Brief:     CMSIS, used header-only.
+# Element:   Nexus-Physical-01-04 (bootloader)
+# Decisions: none
+#
+# SYSTEM include paths: warnings inside ST and Arm headers are not ours. system_stm32f4xx.c and ST's
+# startup file are not compiled (drivers/stm32f407/startup/README.md).
 
 set(_core_include   ${CMAKE_CURRENT_SOURCE_DIR}/cmsis_core/Include)
 set(_device_include ${CMAKE_CURRENT_SOURCE_DIR}/cmsis_device_f4/Include)

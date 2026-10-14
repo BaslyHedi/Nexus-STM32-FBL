@@ -1,6 +1,14 @@
-# Checks the settings of project-settings.cmake against the layout of the version record,
-# derives the strings, and generates version.hpp from version/version.hpp.in.
-# The record is 64 bytes at a fixed place in the image (version/README.md).
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Hedi Basly
+#
+# File:      cmake/version.cmake
+# Brief:     Checks the version settings, derives the strings and generates version.hpp.
+# Element:   Nexus-Physical-01-04 (bootloader)
+# Decisions: SW-08
+#
+# Checks the settings of project-settings.cmake against the layout of the version record, derives
+# the strings, and generates version.hpp from version/version.hpp.in. The record is 64 bytes at a
+# fixed place in the image (version/README.md).
 
 # The layout of the record, written once, here. The checks below and version.hpp.in take it from
 # these variables. NEXUS_RECORD_SIZE is also VERSION_SIZE in interface/linker/memory_map.ld: that one

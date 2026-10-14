@@ -1,10 +1,23 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2026 Hedi Basly
+ */
+
+/**
+ * @file      version/version.cpp
+ * @brief     Builds the version record and places it in the section .version.
+ *
+ * Element:   Nexus-Physical-01-04 (bootloader)
+ * Decisions: SW-08
+ */
+
 #include "version/version.hpp"
 
 namespace nexus::fbl::version {
 
 namespace {
 
-// C++ does not allow `char type[3] = "FBL"` (C does): the NUL has no room. Copy without it.
+/* C++ does not allow `char type[3] = "FBL"` (C does): the NUL has no room. Copy without it. */
 template <std::size_t N>
 constexpr void copyField(char (&destination)[N], const char (&source)[N + 1U]) noexcept
 {
@@ -30,9 +43,9 @@ constexpr Record makeRecord() noexcept
     return record;
 }
 
-}  // namespace
+}  /* namespace */
 
-// `used` and KEEP in fbl.ld: nothing references the record, the tools read it from the image.
+/* `used` and KEEP in fbl.ld: nothing references the record, the tools read it from the image. */
 [[gnu::section(".version"), gnu::used]] extern const Record kRecord = makeRecord();
 
-}  // namespace nexus::fbl::version
+}  /* namespace nexus::fbl::version */

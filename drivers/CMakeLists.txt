@@ -1,4 +1,12 @@
-# The drivers and the start-up code. One file for the whole folder: paths are relative to drivers/.
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Hedi Basly
+#
+# File:      drivers/CMakeLists.txt
+# Brief:     The drivers and the start-up code, one OBJECT library per variant.
+# Element:   Nexus-Physical-01-04 (bootloader)
+# Decisions: SW-07
+#
+# One file for the whole folder: paths are relative to drivers/.
 
 # Start-up code: an OBJECT library for the same reason as nexus_version, the linker script's ENTRY
 # is the only reference. One per variant, compiled with that variant's options.

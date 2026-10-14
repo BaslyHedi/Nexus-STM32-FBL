@@ -1,7 +1,14 @@
-# Steps after the link: the .init_array check, the SREC files for the ST-LINK and the size report.
-# Every variant gets the check and the size report. Only a target called with SREC gets the SREC files:
-# the release image is what goes on a board, and an SREC of the debug image next to it could be
-# flashed by mistake. The debug image is flashed from its .elf.
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Hedi Basly
+#
+# File:      cmake/post-build.cmake
+# Brief:     Steps after the link: the .init_array check, the SREC files and the size report.
+# Element:   Nexus-Physical-01-04 (bootloader)
+# Decisions: SW-03, SW-08
+#
+# Every variant gets the check and the size report. Only a target called with SREC gets the SREC
+# files: the release image is what goes on a board, and an SREC of the debug image next to it could
+# be flashed by mistake. The debug image is flashed from its .elf.
 
 # FBL_Nexus.srec and FBL_Nexus_v1_00-01-00.srec: same content, two names. objcopy runs twice
 # because the SREC header record (S0) carries the output file name. It runs in the output folder

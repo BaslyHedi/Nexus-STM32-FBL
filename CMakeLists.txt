@@ -1,3 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2026 Hedi Basly
+#
+# File:      CMakeLists.txt
+# Brief:     Root of the build: wires the settings, the variants and the folders together.
+# Element:   Nexus-Physical-01-04 (bootloader)
+# Decisions: none
+
 cmake_minimum_required(VERSION 3.25)
 
 # Settings first: the project name and version come from them.
