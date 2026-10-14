@@ -37,6 +37,7 @@ foreach(_variant IN LISTS NEXUS_VARIANTS)
     nexus_options
     nexus_variant_${_variant}
     nexus_startup_${_variant}
+    nexus_drivers_${_variant}
     nexus_version_${_variant})
 
   set_target_properties(${_target} PROPERTIES

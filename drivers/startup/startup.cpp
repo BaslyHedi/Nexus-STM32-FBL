@@ -4,7 +4,7 @@
  */
 
 /**
- * @file      drivers/stm32f407/startup/startup.cpp
+ * @file      drivers/startup/startup.cpp
  * @brief     Vector table and reset sequence of the STM32F407 FBL.
  *
  * Element:   Nexus-Physical-01-04 (bootloader)
@@ -209,7 +209,7 @@ void Default_Handler()
 /*
  * Everything here runs from the flash and uses nothing from .ram_image until the copy is done.
  * The call to main crosses from the flash into the SRAM, beyond the reach of a bl: the linker adds a
- * veneer, which has to stay in .boot_text (checked in the disassembly, drivers/stm32f407/startup/README.md).
+ * veneer, which has to stay in .boot_text (checked in the disassembly, drivers/startup/README.md).
  */
 [[noreturn, gnu::section(".boot_text"), gnu::used]] void Reset_Main()
 {
