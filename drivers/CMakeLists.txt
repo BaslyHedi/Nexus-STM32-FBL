@@ -23,6 +23,7 @@ set_source_files_properties(stm32f407/startup/startup.cpp PROPERTIES
 # The drivers. One source per line: a new driver adds one line here.
 set(_driver_sources
   stm32f407/leds/leds.cpp
+  stm32f407/tick/tick.cpp
 )
 
 # The drivers, one OBJECT library per variant. OBJECT and not STATIC: a handler only overrides the
