@@ -5,12 +5,12 @@ The bare-metal flash bootloader of the STM32F407: receives an application image 
 Part of NEXUS. The definition, decisions and phase plan live in
 [Nexus-Platform](https://github.com/BaslyHedi/Nexus-Platform); this repository cites decision IDs (`HW-nn`, `SW-nn`) from there and never restates them.
 
-**Status:** structure only, no code yet. Phase 1 of the plan is in `system/phases.md` in Nexus-Platform.
+**Status:** the build, the start-up code and the version record exist; the bootloader logic does not. Build: [`cmake/README.md`](cmake/README.md). Phase 1 of the plan is in `system/phases.md` in Nexus-Platform.
 
 ## What it implements
 
 - Software elements: the bootloader (Nexus-Physical-01-04) and the FBL-Updater (Nexus-Physical-01-05). The trace is in [`docs/requirements.md`](docs/requirements.md).
-- Decisions: SW-01 (OpenCyphal), SW-02 (in-house Cyphal stack), SW-03 (C++17 freestanding subset), SW-04 (flash map), SW-05 (SRAM, CCM and FPU), SW-06 (hand-off through the backup SRAM), SW-07 (FBL runs from the SRAM).
+- Decisions: SW-01 (OpenCyphal), SW-02 (in-house Cyphal stack), SW-03 (C++17 freestanding subset), SW-04 (flash map), SW-05 (SRAM, CCM and FPU), SW-06 (hand-off through the backup SRAM), SW-07 (FBL runs from the SRAM), SW-08 (version record).
 
 ## Layout
 
@@ -24,9 +24,10 @@ Part of NEXUS. The definition, decisions and phase plan live in
 | `linker/` | linker scripts |
 | `tests/` | host tests of the bootloader logic |
 | `tools/` | image tool, OpenOCD configurations |
+| `version/` | the version record placed in the image |
 | `third_party/` | pinned CMSIS, test framework, Nexus-CAN-Utils at a tag |
-| `cmake/` | toolchain file, compile options |
-| `docs/` | requirements trace, design, Cyphal scope, coding rules, LED patterns |
+| `cmake/` | toolchain file, compile options, project settings, post-build steps |
+| `docs/` | requirements trace, design, Cyphal scope, LED patterns |
 
 ## Licence
 

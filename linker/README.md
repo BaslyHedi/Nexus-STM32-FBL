@@ -9,7 +9,8 @@
 | Section | At rest (flash) | At run time | Filled by |
 |---|---|---|---|
 | `.isr_vector` | `0x08000000` | read at reset only | the vector table |
-| `.boot_text` | after the vector table | runs from the flash | the start-up routine, marked `section(".boot_text")` |
+| `.version` | `0x08000200`, 64 bytes | not copied, read by tools | `version/version.cpp`, marked `section(".version")` |
+| `.boot_text` | after the version record | runs from the flash | the start-up routine, marked `section(".boot_text")` |
 | `.ram_image` | stored after `.boot_text` | `.text`, `.rodata`, `.data` in the SRAM | copied at start-up |
 | `.vector_ram` | none | SRAM, 512-byte aligned, `VTOR` points here | copy of `.isr_vector` |
 | `.bss` | none | SRAM | cleared at start-up |
@@ -30,6 +31,7 @@ Checked by linking stubs on the host:
 - The vector table copy is aligned and the same size as the original, and the table sits at the start of the FBL region.
 - There is no heap. A call to `malloc` or `operator new` fails to link.
 - `.init_array` has start and end symbols, so an empty array can be checked in the map file (SW-03).
+- The version record is present, 64 bytes, at `FBL_FLASH_ORIGIN + VERSION_OFFSET`, and the vector table ends before it.
 - `__fbl_image_end` marks the end of the image in the flash, for the image tool.
 
 The 512-byte vector alignment is the minimum of PM0214 Rev 10, section 4.4.4: 128 words, for the 98 entries of the F407 (RM0090 Rev 22). The vector table copy must be complete before `VTOR` is written (PM0214 section 4.3.10).
