@@ -2,7 +2,7 @@
 //
 // The version record: 64 bytes at a fixed place in the image, readable with `strings` or at
 // 0x08000200 in a hex or SREC dump. Its layout is a contract with the application and the
-// image tool. The SW decision for it is not written yet in Nexus-Platform.
+// image tool (SW-08).
 #ifndef NEXUS_VERSION_VERSION_HPP
 #define NEXUS_VERSION_VERSION_HPP
 

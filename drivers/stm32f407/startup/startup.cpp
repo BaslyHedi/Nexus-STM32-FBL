@@ -51,7 +51,7 @@ union VectorEntry {
 }  // namespace
 
 // Every handler a driver may define. A handler that is not defined is the weak alias of Default_Handler.
-// A macro because the same list declares the aliases and fills the table; deviation in docs/coding-rules.md.
+// A macro because the same list declares the aliases and fills the table: written twice by hand, the two would drift.
 // Reserved79 is the vector the F407 does not use (CRYP on the F417).
 // clang-format off
 #define NEXUS_IRQ_HANDLERS(X) \
