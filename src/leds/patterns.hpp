@@ -95,6 +95,29 @@ static_assert(idle.size() == 12U, "FBL idle: twelve steps, docs/led-patterns.md"
 static_assert(passDurationMs(idle) == 800U, "FBL idle: a burst lasts 800 ms, docs/led-patterns.md");
 static_assert(usesFourLeds(idle), "FBL idle: four LEDs only");
 
+/* FBL receiving: the circle. One step on the first LED, moved on by the chase every pass. */
+inline constexpr Step receivingSteps[] = {
+    {0b0001U, 100U},
+};
+
+inline constexpr Pattern receiving{receivingSteps, Motion::chase};
+
+static_assert(receiving.size() == 1U, "FBL receiving: one step, docs/led-patterns.md");
+static_assert(passDurationMs(receiving) == 100U, "FBL receiving: 100 ms per LED, docs/led-patterns.md");
+static_assert(usesFourLeds(receiving), "FBL receiving: four LEDs only");
+
+/* FBL-Updater: all four flash together. */
+inline constexpr Step updaterSteps[] = {
+    {0b1111U, 100U},
+    {0b0000U, 100U},
+};
+
+inline constexpr Pattern updater{updaterSteps, Motion::still};
+
+static_assert(updater.size() == 2U, "FBL-Updater: two steps, docs/led-patterns.md");
+static_assert(passDurationMs(updater) == 200U, "FBL-Updater: 100 ms on, 100 ms off, docs/led-patterns.md");
+static_assert(usesFourLeds(updater), "FBL-Updater: four LEDs only");
+
 }  /* namespace nexus::fbl::leds */
 
 #endif
