@@ -7,8 +7,8 @@ The bootloader flashes fast and the application flashes slowly, so the speed alo
 | State | Pattern |
 |---|---|
 | FBL idle | Burst chase, below |
-| FBL receiving | to define |
-| FBL-Updater running | to define |
+| FBL receiving | Circle, below |
+| FBL-Updater running | All flash, below |
 | Application running | defined in `Nexus-STM32-App` |
 
 ## The LEDs
@@ -44,3 +44,24 @@ One LED's burst:
 | 12 | off | 230 ms |
 
 A burst lasts 800 ms, a full turn of the four LEDs 3200 ms. The table is `idleSteps` in `src/leds/patterns.hpp`, row for row; `static_assert`s there check the number of steps and the 800 ms.
+
+## FBL receiving: circle
+
+One LED at a time, 100 ms each, clockwise without a pause: green, orange, red, blue, then green again. A full turn lasts 400 ms.
+
+| Step | LED | Time |
+|---|---|---|
+| 1 | on | 100 ms |
+
+The table is `receivingSteps` in `src/leds/patterns.hpp`: one step on the first LED, moved one LED clockwise on each pass.
+
+## FBL-Updater running: all flash
+
+The four LEDs together, 100 ms on, 100 ms off: five flashes a second.
+
+| Step | LEDs | Time |
+|---|---|---|
+| 1 | all on | 100 ms |
+| 2 | all off | 100 ms |
+
+The table is `updaterSteps` in `src/leds/patterns.hpp`.
