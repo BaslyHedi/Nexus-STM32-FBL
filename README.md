@@ -5,7 +5,7 @@ The bare-metal flash bootloader of the STM32F407: receives an application image 
 Part of NEXUS. The definition, decisions and phase plan live in
 [Nexus-Platform](https://github.com/BaslyHedi/Nexus-Platform); this repository cites decision IDs (`HW-nn`, `SW-nn`) from there and never restates them.
 
-**Status:** structure only, no code yet. Phase 1 of the plan is in `system/phases.md` in Nexus-Platform.
+**Status:** the build, the start-up code and the version record exist; the bootloader logic does not. Build: [`cmake/README.md`](cmake/README.md). Phase 1 of the plan is in `system/phases.md` in Nexus-Platform.
 
 ## What it implements
 
@@ -24,8 +24,9 @@ Part of NEXUS. The definition, decisions and phase plan live in
 | `linker/` | linker scripts |
 | `tests/` | host tests of the bootloader logic |
 | `tools/` | image tool, OpenOCD configurations |
+| `version/` | the version record placed in the image |
 | `third_party/` | pinned CMSIS, test framework, Nexus-CAN-Utils at a tag |
-| `cmake/` | toolchain file, compile options |
+| `cmake/` | toolchain file, compile options, project settings, post-build steps |
 | `docs/` | requirements trace, design, Cyphal scope, coding rules, LED patterns |
 
 ## Licence

@@ -6,7 +6,8 @@
  * not stall it. Only the vector table and the start-up code are used from the flash:
  *
  *   flash  .isr_vector   vector table, read at reset
- *          .boot_text    start-up routine: copies .vector_ram and .ram_image, sets VTOR
+ *          .version      version record, 64 bytes at 0x08000200
+ *          .boot_text   start-up routine: copies .vector_ram and .ram_image, sets VTOR
  *          .ram_image    LOAD ADDRESS of the code, constants and data that run from the SRAM
  *   SRAM   .vector_ram   copy of the vector table, aligned for VTOR
  *          .ram_image    code, constants and initialised data
@@ -42,6 +43,16 @@ SECTIONS
     __isr_vector_load = .;
     KEEP(*(.isr_vector))
     . = ALIGN(4);
+  } > FLASH
+
+  /*
+   * Flash: the version record, 64 bytes at a fixed offset (0x08000200), before the first code.
+   * Mark it with section(".version"). Never copied to the SRAM. Not read by the core: the tools
+   * read it from the image. The gap between the vector table and the record holds nothing.
+   */
+  .version (ORIGIN(FLASH) + VERSION_OFFSET) :
+  {
+    KEEP(*(.version))
   } > FLASH
 
   /*
@@ -164,4 +175,7 @@ SECTIONS
 ASSERT((__vector_ram & (_Vector_Alignment - 1)) == 0, "vector table copy is not aligned for VTOR")
 ASSERT(SIZEOF(.vector_ram) == SIZEOF(.isr_vector), "vector table copy and original differ in size")
 ASSERT(__isr_vector_load == ORIGIN(FLASH), "the vector table must be at the start of the FBL region")
+ASSERT(SIZEOF(.isr_vector) <= VERSION_OFFSET, "the vector table overlaps the version record")
+ASSERT(SIZEOF(.version) == VERSION_SIZE, "the version record is missing or is not 64 bytes")
+ASSERT(ADDR(.version) == FBL_FLASH_ORIGIN + VERSION_OFFSET, "the version record is not at its fixed address")
 ASSERT(SIZEOF(.handoff) <= HANDOFF_LENGTH, "hand-off record is larger than the region reserved for it")

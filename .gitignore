@@ -2,6 +2,7 @@ build/
 build-*/
 *.elf
 *.bin
+*.srec
 *.map
 *.o
 .cache/

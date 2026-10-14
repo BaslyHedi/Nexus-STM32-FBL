@@ -13,6 +13,14 @@
 FBL_FLASH_ORIGIN = 0x08000000;
 FBL_FLASH_LENGTH = 128K;
 
+/*
+ * Version record: 64 bytes at a fixed offset from the start of an image, after the vector table
+ * (98 vectors are 392 bytes) and before the first code. Same offset in the FBL and the application,
+ * so a tool reads either one the same way. Layout: version/version.hpp.in.
+ */
+VERSION_OFFSET = 0x200;
+VERSION_SIZE   = 64;
+
 /* Application: sectors 5 to 11 (7 x 128 KB). Starts on a 128 KB sector boundary. */
 APP_FLASH_ORIGIN = 0x08020000;
 APP_FLASH_LENGTH = 896K;

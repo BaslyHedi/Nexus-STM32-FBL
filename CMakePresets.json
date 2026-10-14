@@ -1,0 +1,22 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "fbl",
+      "displayName": "FBL for the STM32F407",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "toolchainFile": "${sourceDir}/cmake/toolchain-arm-none-eabi.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "fbl",
+      "configurePreset": "fbl"
+    }
+  ]
+}
