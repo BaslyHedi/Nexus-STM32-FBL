@@ -50,7 +50,8 @@ target_compile_options(nexus_options INTERFACE
 )
 
 # -nostdlib: no C library and no C++ runtime. libgcc stays for the compiler's own helpers (division).
-# A call to malloc, operator new or memcpy fails to link, which is the intent.
+# A call to malloc or operator new fails to link, which is the intent.
+# The four memory functions GCC may call are in drivers/runtime/memory.cpp.
 target_link_options(nexus_options INTERFACE
   -nostartfiles
   -nostdlib
