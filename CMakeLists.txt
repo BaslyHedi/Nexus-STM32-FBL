@@ -22,6 +22,7 @@ include(cmake/post-build.cmake)
 add_subdirectory(third_party)
 add_subdirectory(version)
 add_subdirectory(drivers)
+add_subdirectory(cyphal)
 
 # One executable per variant (project-settings.cmake). Created before src/, which adds its sources to each.
 foreach(_variant IN LISTS NEXUS_VARIANTS)
@@ -38,6 +39,7 @@ foreach(_variant IN LISTS NEXUS_VARIANTS)
     nexus_variant_${_variant}
     nexus_startup_${_variant}
     nexus_drivers_${_variant}
+    nexus_cyphal_${_variant}
     nexus_version_${_variant})
 
   set_target_properties(${_target} PROPERTIES
