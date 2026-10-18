@@ -15,6 +15,6 @@ What the in-house stack has to do for the download, and nothing more (SW-02). ID
 
 **Limits that keep it small.** One node. One reassembly session at a time. No dynamic allocation. Classic CAN only.
 
-**Layers, in build order.** Transfer CRC. CAN identifier. Transmit with segmentation. Receive with reassembly and the transfer-ID rules. Serialization of the four types. The node.
+**Layers, in build order.** Transfer CRC. CAN identifier. Transmit with segmentation. Receive with reassembly and the transfer-ID rules. Serialization of the four types. The node. Where each stands: [`../cyphal/README.md`](../cyphal/README.md).
 
 **Checked against.** The specification's examples on the host, and `yakut` over SocketCAN on the bench.

@@ -5,7 +5,7 @@ The bare-metal flash bootloader of the STM32F407: receives an application image 
 Part of NEXUS. The definition, decisions and phase plan live in
 [Nexus-Platform](https://github.com/BaslyHedi/Nexus-Platform); this repository cites decision IDs (`HW-nn`, `SW-nn`) from there and never restates them.
 
-**Status:** the build, the start-up code and the version record exist, and the image is flashed and debugged from VS Code through the ST-LINK; the bootloader logic does not. Build: [`cmake/README.md`](cmake/README.md). Flash and debug: [`tools/README.md`](tools/README.md). Phase 1 of the plan is in `system/phases.md` in Nexus-Platform.
+**Status:** the build, the start-up code and the version record exist, and the image is flashed and debugged from VS Code through the ST-LINK, and the LEDs show the FBL patterns. The Cyphal stack has its first layer, the transfer CRC ([`cyphal/README.md`](cyphal/README.md)); the bootloader logic does not exist yet. Build: [`cmake/README.md`](cmake/README.md). Flash and debug: [`tools/README.md`](tools/README.md). Phase 1 of the plan is in `system/phases.md` in Nexus-Platform.
 
 ## What it implements
 
