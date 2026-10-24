@@ -22,37 +22,39 @@
 static_assert(nexus::cyphal::TransferCrc().value() == 0xFFFFU, "Wrong initial value of the CRC ");
 
 /* Check 2 */
-constexpr std::uint8_t data[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
-constexpr std::size_t dataSize = std::extent_v<decltype(data)>;
-constexpr auto lambdaCheck2 = [](){
+constexpr std::uint8_t checkString[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+constexpr std::size_t checkStringSize = std::extent_v<decltype(checkString)>;
+constexpr auto crcOfCheckString = [](){
     nexus::cyphal::TransferCrc crc;
-    crc.add(data, dataSize);
+    crc.add(checkString, checkStringSize);
     return crc.value();
 };
-static_assert(lambdaCheck2() == 0x29B1U, "Wrong CRC value for the given data");
+static_assert(crcOfCheckString() == 0x29B1U, "Wrong CRC value for the given data");
 
 /* Check 3 */
-constexpr auto lambdaCheck3 = [](){
+constexpr auto crcOfCheckStringInTwoParts = [](){
     nexus::cyphal::TransferCrc crc;
     constexpr std::size_t splitPoint = 4U;
-    crc.add(data, splitPoint);
-    crc.add(&data[splitPoint], dataSize - splitPoint);
+    crc.add(checkString, splitPoint);
+    crc.add(&checkString[splitPoint], checkStringSize - splitPoint);
     return crc.value();
 };
 
-static_assert(lambdaCheck3() == 0x29B1U, "Wrong CRC value for 2 steps of the given data");
+static_assert(crcOfCheckStringInTwoParts() == 0x29B1U,
+              "Wrong CRC value for 2 steps of the given data");
 
 /* Check 4 */
-constexpr auto lambdaCheck4 = [](){
+constexpr auto crcOfCheckStringWithItsCrc = [](){
     nexus::cyphal::TransferCrc crc;
-    crc.add(data, dataSize);
+    crc.add(checkString, checkStringSize);
     const std::uint16_t crcValue = crc.value();
     crc.add(static_cast<std::uint8_t>(crcValue >> 8U));
     crc.add(static_cast<std::uint8_t>(crcValue & 0xFFU));
     return crc.value();
 };
 
-static_assert(lambdaCheck4() == 0x0000U, "Wrong Calculation expecting 0");
+static_assert(crcOfCheckStringWithItsCrc() == 0x0000U,
+              "The check string followed by its CRC, high byte first, does not give 0");
 
 /* Check 5: a real transfer, the GetInfo response of node 42 in spec section 4.2.3. Each frame is
  * kept as it is on the bus: data field and DLC, tail byte included. The CRC is split over the

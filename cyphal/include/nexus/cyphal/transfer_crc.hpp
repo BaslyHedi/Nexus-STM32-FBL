@@ -26,10 +26,10 @@ namespace nexus::cyphal {
 
 class TransferCrc {
 public:
-    /* One byte operation */
+    /* Folds one byte into the CRC, most significant bit first. */
     constexpr void add(std::uint8_t const byte) noexcept
     {
-        std::uint16_t rem = value_ ^ (byte << 8U);
+        std::uint16_t rem = static_cast<std::uint16_t>(value_ ^ (byte << 8U));
         for (std::uint_fast8_t i = 0U; i < 8U; ++i)
         {
             if ((rem & msbBit_) != 0U)
@@ -45,17 +45,19 @@ public:
         value_ = rem;
     }
 
-    /* Multiple bytes operation */
+    /* Folds size bytes into the CRC, in order. data may be null only when size is 0, an empty
+     * payload; a null data with a size is a caller bug, and the call then changes nothing. */
     constexpr void add(const std::uint8_t* data, std::size_t size) noexcept
     {
-        if (data != nullptr) {
-            for (std::size_t i = 0U; i < size; ++i) {
-                add(data[i]);
-            }
+        if ((data == nullptr) && (size != 0U)) {
+            return;
+        }
+        for (std::size_t i = 0U; i < size; ++i) {
+            add(data[i]);
         }
     }
 
-    /* Getter function for the private member value_ */
+    /* The CRC of the bytes added so far. Sent high byte first; 0 after a receiver adds the CRC. */
     constexpr std::uint16_t value() const noexcept { return value_; }
 
 private:
