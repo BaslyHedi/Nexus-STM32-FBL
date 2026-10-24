@@ -16,7 +16,7 @@ Scope: only what the download needs, see [`../docs/cyphal-scope.md`](../docs/cyp
 
 | Layer | Header | Status |
 |---|---|---|
-| Transfer CRC, CRC-16/CCITT-FALSE (spec section A.1) | `transfer_crc.hpp` | written, checked at compile time |
+| Transfer CRC, CRC-16/CCITT-FALSE (spec section A.1) | `transfer_crc.hpp` | done, checked at compile time |
 | CAN identifier | | not started |
 | Transmit, segmentation | | not started |
 | Receive, reassembly and transfer-ID rules | | not started |
@@ -34,3 +34,5 @@ The transfer CRC is checked against these values:
 | `"123456789"` | `29B1` | the check value of the spec, section A.1 |
 | `"1234"` then `"56789"` | `29B1` | a transfer arrives in frames, so the CRC is fed in pieces |
 | `"123456789"`, then `29 B1` | `0000` | the receiver runs the CRC over payload and CRC, then compares to zero. This only works with the CRC appended high byte first, the native big-endian order of the spec |
+| The GetInfo response of spec section 4.2.3, 11 frames, fed frame by frame without the tail bytes | `9AE7` | a real transfer from the spec, with the CRC split over the last two frames |
+| The same, with its CRC bytes | `0000` | the receiver's check on a real transfer |
