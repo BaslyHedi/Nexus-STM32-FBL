@@ -19,7 +19,7 @@
 #include <type_traits>
 
 /* Check 1 */
-static_assert(nexus::cyphal::TransferCrc().value() == 0xFFFFU, "Wrong initial value of the CRC ");
+static_assert(nexus::cyphal::TransferCrc().value() == 0xFFFFU, "Wrong initial value of the CRC");
 
 /* Check 2 */
 constexpr std::uint8_t checkString[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};

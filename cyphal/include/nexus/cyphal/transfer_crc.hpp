@@ -41,7 +41,7 @@ public:
                 rem = static_cast<std::uint16_t>(rem << 1U);
             }
         }
-        
+
         value_ = rem;
     }
 
