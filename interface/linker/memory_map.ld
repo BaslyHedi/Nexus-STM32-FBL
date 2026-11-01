@@ -59,7 +59,8 @@ SRAM_LENGTH = 128K;
  * Backup SRAM: 2 KB with ECC, survives a system reset (RM0481 Table 43, section 2.3.3). The
  * application writes the hand-off record here before it resets, and the FBL reads it (SW-06).
  * Both images enable the BKPSRAM clock and the backup domain write access before touching it.
- * Non-secure address, TrustZone off (TZEN = 0xC3).
+ * Non-secure address, TrustZone off (TZEN = 0xC3). BKPSRAM_BASE_NS and BKPSRAM_SIZE in stm32h533xx.h
+ * (CMSIS device V1.7.0) give the same address and size.
  */
 BKPSRAM_ORIGIN  = 0x40036400;
 BKPSRAM_LENGTH  = 2K;

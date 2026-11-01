@@ -26,8 +26,8 @@ _Min_Stack_Size = 2K;
 
 /*
  * VTOR alignment for 149 vectors (16 system + 133 interrupts, RM0481 Table 153): the table is 596
- * bytes, so TBLOFF needs the next power of two, 1024 bytes (SW-07). To confirm in the Armv8-M
- * Architecture Reference Manual: it is not in RM0481.
+ * bytes, so TBLOFF needs the next power of two, 1024 bytes (SW-07). TBLOFF starts at bit 7
+ * (core_cm33.h) and Zephyr rounds up the same way for more than 16 interrupts.
  */
 _Vector_Alignment = 1024;
 

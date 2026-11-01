@@ -34,4 +34,4 @@ Checked by linking stubs on the host:
 - The version record is present, 64 bytes, at `FBL_FLASH_ORIGIN + VERSION_OFFSET`, and the vector table ends before it.
 - `__fbl_image_end` marks the end of the image in the flash, for the image tool.
 
-The 1024-byte vector alignment is the table size rounded up to a power of two: 149 entries of the H533 (16 system and 133 interrupts, RM0481 Table 153) are 596 bytes. Armv8-M's rule is still to be confirmed in its reference manual. The vector table copy must be complete before `VTOR` is written.
+The 1024-byte vector alignment is the table size rounded up to a power of two: 149 entries of the H533 (16 system and 133 interrupts, RM0481 Table 153) are 596 bytes. `SCB_VTOR_TBLOFF` starts at bit 7 in `core_cm33.h`, so 128 bytes is the floor, and rounding up to the next power of two for more than 16 interrupts is the rule Zephyr applies to every Cortex-M (checked there and in CMSIS; Arm's own manual is not in `vendor/`). The vector table copy must be complete before `VTOR` is written.
