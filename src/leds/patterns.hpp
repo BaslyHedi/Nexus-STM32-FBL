@@ -89,7 +89,7 @@ inline constexpr Step idleSteps[] = {
     {0b0000U, 230U},
 };
 
-inline constexpr Pattern idle{idleSteps, Motion::chase};
+inline constexpr Pattern idle{idleSteps, Motion::still};
 
 static_assert(idle.size() == 12U, "FBL idle: twelve steps, docs/led-patterns.md");
 static_assert(passDurationMs(idle) == 800U, "FBL idle: a burst lasts 800 ms, docs/led-patterns.md");
