@@ -1,6 +1,6 @@
 /*
  * Flash and RAM map of the STM32H533RE, shared by every linker script.
- * Decisions: SW-04 (flash), SW-05 (RAM), SW-06 (hand-off), HW-22 (the part). Sector layout: RM0481
+ * Decisions: SW-09 (flash), SW-10 (RAM and hand-off), SW-11 (version record), HW-22 (the part). Sector layout: RM0481
  * Rev 5, Table 53. Reworked for the H533 from the F407 map.
  *
  * Symbols only, so each image declares its own MEMORY. Included with

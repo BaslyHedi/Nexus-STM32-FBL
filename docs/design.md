@@ -6,12 +6,12 @@ Boot flow and the update state machine. Written as the design is made. Decisions
 
 | Topic | Decision |
 |---|---|
-| Flash map | STM32H533RE, 512 KB in two banks, no bank swap. FBL sectors 0-15 `0x08000000` (128 KB), application sectors 16-56 `0x08020000` (328 KB), CFG sector 57 `0x08072000` (8 KB), NvM sectors 58-63 `0x08074000` (48 KB). CFG and NvM in bank 2. Details in `interface/linker/memory_map.ld`. SW-04, to supersede (HW-22) |
-| RAM | SRAM1 128 KB at `0x20000000`. SRAM2 and SRAM3 left to the application. SW-05, to supersede |
+| Flash map | STM32H533RE, 512 KB in two banks, no bank swap. FBL sectors 0-15 `0x08000000` (128 KB), application sectors 16-56 `0x08020000` (328 KB), CFG sector 57 `0x08072000` (8 KB), NvM sectors 58-63 `0x08074000` (48 KB). CFG and NvM in bank 2. Details in `interface/linker/memory_map.ld`. SW-09 |
+| RAM | SRAM1 128 KB at `0x20000000`. SRAM2 and SRAM3 left to the application. SW-10 |
 | Floating point | None in the FBL. SW-05 |
-| Hand-over from the application | Backup SRAM `0x40036400`, first 512 bytes of 2 KB. SW-06, to supersede |
-| Where the FBL runs | From the SRAM, stored in the flash. SW-07 |
-| Version record | At offset `0x400`: the 149-vector table is 596 bytes. SW-08, to amend |
+| Hand-over from the application | Backup SRAM `0x40036400`, first 512 bytes of 2 KB. SW-10 |
+| Where the FBL runs | From the SRAM, stored in the flash. SW-07, SW-11 |
+| Version record | At offset `0x400`: the 149-vector table is 596 bytes. SW-11 |
 
 ## Open
 
