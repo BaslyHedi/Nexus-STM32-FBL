@@ -2,9 +2,9 @@
     /*
      * Cortex-Debug through ST's OpenOCD fork and the on-board STLINK-V3EC (tools/openocd/).
      *
-     * The FBL runs from the SRAM (SW-07). The Cortex-M4 breakpoint unit only reached the code region
-     * below 0x20000000. The M33's may reach the SRAM (to check on the board); until then a breakpoint in
-     * the SRAM is a BKPT instruction that GDB writes there.
+     * The FBL runs from the SRAM (SW-07). The Cortex-M4 of the F407 could not set a hardware breakpoint above
+     * 0x20000000. The M33 can (checked on the Nucleo), so this workaround may be dropped; until it is, a
+     * software breakpoint in the SRAM is a BKPT instruction that GDB writes there.
      * Written before the start-up copy, the copy overwrites it. So after the load and after every
      * restart or reset, the post commands below run the start-up code first: OpenOCD stops the
      * core on a hardware breakpoint at __main_veneer, in the flash, after the copy and before main.

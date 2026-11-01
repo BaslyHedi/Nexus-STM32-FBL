@@ -1,6 +1,6 @@
 # Linker scripts
 
-`fbl.ld` links the bootloader to be **stored in the FBL flash region and executed from the SRAM** (SW-04, SW-05, SW-07), with the hand-off record in the backup SRAM (SW-06). `updater.ld` follows when the FBL-Updater is written. Both take their addresses from [`../interface/linker/memory_map.ld`](../interface/linker/memory_map.ld).
+`fbl.ld` links the bootloader to be **stored in the FBL flash region and executed from the SRAM** (SW-09, SW-10, SW-07), with the hand-off record in the backup SRAM (SW-10). `updater.ld` follows when the FBL-Updater is written. Both take their addresses from [`../interface/linker/memory_map.ld`](../interface/linker/memory_map.ld).
 
 **Order on the link line:** `-L interface/linker` must come before `-T linker/fbl.ld`.
 

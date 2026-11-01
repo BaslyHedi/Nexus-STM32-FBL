@@ -8,7 +8,7 @@
  * @brief     Entry point of the bootloader.
  *
  * Element:   Nexus-Physical-01-04 (bootloader)
- * Decisions: none
+ * Decisions: HW-22
  *
  * Temporary: plays the FBL idle pattern on LD2 (T1.3) until the update state machine exists. Only
  * bit 0 of the pattern reaches the Nucleo's single LED; the LED strip patterns come later.

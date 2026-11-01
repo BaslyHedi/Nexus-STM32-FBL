@@ -1,6 +1,6 @@
 /*
  * Bootloader (Nexus-Physical-01-04) for the STM32H533RE.
- * Flash, SRAM and backup SRAM come from interface/linker/memory_map.ld (SW-04, SW-05, SW-06).
+ * Flash, SRAM and backup SRAM come from interface/linker/memory_map.ld (SW-09, SW-10).
  *
  * The FBL is stored in the flash and EXECUTES FROM THE SRAM (SW-07), so a flash erase does
  * not stall it. Only the vector table and the start-up code are used from the flash:
@@ -12,7 +12,7 @@
  *   SRAM   .vector_ram   copy of the vector table, aligned for VTOR
  *          .ram_image    code, constants and initialised data
  *          .bss          zero-initialised data
- *   backup SRAM  .handoff  hand-off record, never loaded and never cleared (SW-06)
+ *   backup SRAM  .handoff  hand-off record, never loaded and never cleared (SW-10)
  *
  * No heap is defined on purpose: a call to malloc or operator new fails to link.
  */

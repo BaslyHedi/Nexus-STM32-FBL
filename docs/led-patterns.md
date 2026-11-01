@@ -6,7 +6,7 @@ The bootloader flashes fast and the application flashes slowly, so the speed alo
 
 | State | Pattern |
 |---|---|
-| FBL idle | Burst chase, below |
+| FBL idle | Burst chase, below (a still burst on the Nucleo's one LED) |
 | FBL receiving | Circle, below |
 | FBL-Updater running | All flash, below |
 | Application running | defined in `Nexus-STM32-App` |
