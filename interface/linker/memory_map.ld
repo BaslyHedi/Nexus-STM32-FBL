@@ -15,9 +15,13 @@
  * only one write or erase runs at a time on the whole flash (one BSY flag).
  *
  *   sectors   0-15  0x08000000  128 KB  FBL            bank 1
- *   sectors  16-56  0x08020000  328 KB  application    bank 1 and bank 2 (bank 2 starts at 0x08040000)
- *   sector      57  0x08072000    8 KB  CFG            bank 2, configuration that never changes at run time
- *   sectors  58-63  0x08074000   48 KB  NvM            bank 2, data that changes at run time
+ *   sector      16  0x08020000    8 KB  CFG            bank 1, configuration that never changes at run time
+ *   sectors  17-22  0x08022000   48 KB  NvM            bank 1, data that changes at run time
+ *   sectors  23-31  0x0802E000   72 KB  reserve        bank 1, not claimed
+ *   sectors  32-63  0x08040000  256 KB  application    bank 2, all of it
+ *
+ * Bank 2 holds only the application, so a CFG or NvM erase or write (bank 1) never stalls a fetch of
+ * application code, and the FBL runs from the SRAM (SW-11) while it erases and writes bank 2.
  *
  * The CFG and NvM regions are shared between the FBL and the application. Their content and
  * interface are not defined yet.
@@ -36,17 +40,21 @@ FBL_FLASH_LENGTH = 128K;
 VERSION_OFFSET = 0x400;
 VERSION_SIZE   = 64;
 
-/* Application: sectors 16 to 56. Starts on a sector boundary, at the address the F407 map used. */
-APP_FLASH_ORIGIN = 0x08020000;
-APP_FLASH_LENGTH = 328K;
-
-/* CFG: sector 57. Written rarely, read by both images. */
-CFG_FLASH_ORIGIN = 0x08072000;
+/* CFG: sector 16, after the FBL. Written rarely, read by both images. */
+CFG_FLASH_ORIGIN = 0x08020000;
 CFG_FLASH_LENGTH = 8K;
 
-/* NvM: sectors 58 to 63, the end of bank 2. */
-NVM_FLASH_ORIGIN = 0x08074000;
+/* NvM: sectors 17 to 22. */
+NVM_FLASH_ORIGIN = 0x08022000;
 NVM_FLASH_LENGTH = 48K;
+
+/* Reserve: sectors 23 to 31, the rest of bank 1. Nothing is placed here. */
+RESERVE_FLASH_ORIGIN = 0x0802E000;
+RESERVE_FLASH_LENGTH = 72K;
+
+/* Application: sectors 32 to 63, the whole of bank 2. Starts on the bank boundary. */
+APP_FLASH_ORIGIN = 0x08040000;
+APP_FLASH_LENGTH = 256K;
 
 /*
  * Main SRAM: SRAM1 (128 KB). SRAM2 (80 KB, ECC) and SRAM3 (64 KB) follow it and are left to the

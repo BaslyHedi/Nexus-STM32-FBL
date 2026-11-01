@@ -6,7 +6,7 @@ Boot flow and the update state machine. Written as the design is made. Decisions
 
 | Topic | Decision |
 |---|---|
-| Flash map | STM32H533RE, 512 KB in two banks, no bank swap. FBL sectors 0-15 `0x08000000` (128 KB), application sectors 16-56 `0x08020000` (328 KB), CFG sector 57 `0x08072000` (8 KB), NvM sectors 58-63 `0x08074000` (48 KB). CFG and NvM in bank 2. Details in `interface/linker/memory_map.ld`. SW-09 |
+| Flash map | STM32H533RE, 512 KB in two banks, no bank swap. Bank 1: FBL sectors 0-15 `0x08000000` (128 KB), CFG sector 16 `0x08020000` (8 KB), NvM sectors 17-22 `0x08022000` (48 KB), reserve sectors 23-31 `0x0802E000` (72 KB). Bank 2: application sectors 32-63 `0x08040000` (256 KB), all of it. Details in `interface/linker/memory_map.ld`. SW-09 |
 | RAM | SRAM1 128 KB at `0x20000000`. SRAM2 and SRAM3 left to the application. SW-10 |
 | Floating point | None in the FBL. SW-05 |
 | Hand-over from the application | Backup SRAM `0x40036400`, first 512 bytes of 2 KB. SW-10 |
