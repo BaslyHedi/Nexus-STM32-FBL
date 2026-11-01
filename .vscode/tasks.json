@@ -16,9 +16,9 @@
         },
         {
             "label": "FBL: flash release (SREC)",
-            "detail": "FBL_Nexus.srec through the ST-LINK, sector erase, verify, reset",
+            "detail": "FBL_Nexus.srec through the STLINK-V3EC, sector erase, verify, reset",
             "type": "process",
-            "command": "openocd",
+            "command": "${userHome}/.local/openocd-st/bin/openocd",
             "args": [
                 "-f", "tools/openocd/fbl.cfg",
                 "-f", "tools/openocd/connect-under-reset.cfg",
@@ -30,9 +30,9 @@
         },
         {
             "label": "FBL: flash debug (ELF)",
-            "detail": "FBL_Nexus_debug.elf through the ST-LINK, sector erase, verify, reset",
+            "detail": "FBL_Nexus_debug.elf through the STLINK-V3EC, sector erase, verify, reset",
             "type": "process",
-            "command": "openocd",
+            "command": "${userHome}/.local/openocd-st/bin/openocd",
             "args": [
                 "-f", "tools/openocd/fbl.cfg",
                 "-f", "tools/openocd/connect-under-reset.cfg",
@@ -44,13 +44,13 @@
         },
         {
             "label": "FBL: read version record",
-            "detail": "64 bytes at 0x08000200, without stopping the core",
+            "detail": "64 bytes at 0x08000400, without stopping the core",
             "type": "process",
-            "command": "openocd",
+            "command": "${userHome}/.local/openocd-st/bin/openocd",
             "args": [
                 "-f", "tools/openocd/fbl.cfg",
                 "-c", "init",
-                "-c", "echo \"[mdb 0x08000200 64]\"",
+                "-c", "echo \"[mdb 0x08000400 64]\"",
                 "-c", "shutdown"
             ],
             "options": { "cwd": "${workspaceFolder}" },
