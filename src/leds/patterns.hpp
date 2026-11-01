@@ -73,7 +73,10 @@ constexpr bool usesFourLeds(const Pattern& pattern) noexcept
     return true;
 }
 
-/* FBL idle: the burst chase. */
+/*
+ * FBL idle: the burst. Still on the Nucleo, whose one LED would show only one pass in four of a
+ * chase; the strip brings the chase back (docs/led-patterns.md).
+ */
 inline constexpr Step idleSteps[] = {
     {0b0001U, 70U},
     {0b0000U, 30U},

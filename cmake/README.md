@@ -34,7 +34,7 @@ The result is in `build/output/`:
 | File | Owns |
 |---|---|
 | `project-settings.cmake` | software type, platform name and version, software version, the variants and their target and output file names, linker script path. Included before `project()`. |
-| `toolchain-arm-none-eabi.cmake` | the compiler and its tools, the CPU flags (`-mcpu=cortex-m4 -mthumb -mfloat-abi=soft`, SW-05) |
+| `toolchain-arm-none-eabi.cmake` | the compiler and its tools, the CPU flags (`-mcpu=cortex-m33 -mthumb -mfloat-abi=soft`, SW-05) |
 | `compile-options.cmake` | the `nexus_options` interface library: C++17 and the freestanding subset (SW-03), warnings, link options; one `nexus_variant_<variant>` interface library per variant with its optimisation; and `nexus_use_linker_script()` |
 | `version.cmake` | checks the settings against the version record layout, builds the strings, generates `version.hpp` |
 | `post-build.cmake` | after the link: the `.init_array` check, the SREC files (release only), the size report |
