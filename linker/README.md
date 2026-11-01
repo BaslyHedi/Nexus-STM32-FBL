@@ -1,6 +1,6 @@
 # Linker scripts
 
-`fbl.ld` links the bootloader to be **stored in the FBL flash region and executed from the SRAM** (SW-04, SW-05, SW-07), with the hand-off record in the backup SRAM (SW-06). `updater.ld` follows when the FBL-Updater is written. Both take their addresses from [`../interface/linker/memory_map.ld`](../interface/linker/memory_map.ld).
+`fbl.ld` links the bootloader to be **stored in the FBL flash region and executed from the SRAM** (SW-09, SW-10, SW-07), with the hand-off record in the backup SRAM (SW-10). `updater.ld` follows when the FBL-Updater is written. Both take their addresses from [`../interface/linker/memory_map.ld`](../interface/linker/memory_map.ld).
 
 **Order on the link line:** `-L interface/linker` must come before `-T linker/fbl.ld`.
 
@@ -34,4 +34,4 @@ Checked by linking stubs on the host:
 - The version record is present, 64 bytes, at `FBL_FLASH_ORIGIN + VERSION_OFFSET`, and the vector table ends before it.
 - `__fbl_image_end` marks the end of the image in the flash, for the image tool.
 
-The 512-byte vector alignment is the minimum of PM0214 Rev 10, section 4.4.4: 128 words, for the 98 entries of the F407 (RM0090 Rev 22). The vector table copy must be complete before `VTOR` is written (PM0214 section 4.3.10).
+The 1024-byte vector alignment is the table size rounded up to a power of two: 149 entries of the H533 (16 system and 133 interrupts, RM0481 Table 153) are 596 bytes. `SCB_VTOR_TBLOFF` starts at bit 7 in `core_cm33.h`, so 128 bytes is the floor, and rounding up to the next power of two for more than 16 interrupts is the rule Zephyr applies to every Cortex-M (checked there and in CMSIS; Arm's own manual is not in `vendor/`). The vector table copy must be complete before `VTOR` is written.

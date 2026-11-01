@@ -1,18 +1,18 @@
 /*
- * Bootloader (Nexus-Physical-01-04) for the STM32F407VGT6.
- * Flash, SRAM and backup SRAM come from interface/linker/memory_map.ld (SW-04, SW-05, SW-06).
+ * Bootloader (Nexus-Physical-01-04) for the STM32H533RE.
+ * Flash, SRAM and backup SRAM come from interface/linker/memory_map.ld (SW-09, SW-10).
  *
  * The FBL is stored in the flash and EXECUTES FROM THE SRAM (SW-07), so a flash erase does
  * not stall it. Only the vector table and the start-up code are used from the flash:
  *
  *   flash  .isr_vector   vector table, read at reset
- *          .version      version record, 64 bytes at 0x08000200
+ *          .version      version record, 64 bytes at 0x08000400
  *          .boot_text   start-up routine: copies .vector_ram and .ram_image, sets VTOR
  *          .ram_image    LOAD ADDRESS of the code, constants and data that run from the SRAM
  *   SRAM   .vector_ram   copy of the vector table, aligned for VTOR
  *          .ram_image    code, constants and initialised data
  *          .bss          zero-initialised data
- *   backup SRAM  .handoff  hand-off record, never loaded and never cleared (SW-06)
+ *   backup SRAM  .handoff  hand-off record, never loaded and never cleared (SW-10)
  *
  * No heap is defined on purpose: a call to malloc or operator new fails to link.
  */
@@ -24,8 +24,12 @@ INCLUDE memory_map.ld
 /* Smallest stack the image must leave free at the top of the SRAM. */
 _Min_Stack_Size = 2K;
 
-/* VTOR alignment for 98 vectors (16 system + 82 interrupts) is 512 bytes (SW-07, PM0214 Rev 10 section 4.4.4). */
-_Vector_Alignment = 512;
+/*
+ * VTOR alignment for 149 vectors (16 system + 133 interrupts, RM0481 Table 153): the table is 596
+ * bytes, so TBLOFF needs the next power of two, 1024 bytes (SW-07). TBLOFF starts at bit 7
+ * (core_cm33.h) and Zephyr rounds up the same way for more than 16 interrupts.
+ */
+_Vector_Alignment = 1024;
 
 MEMORY
 {
@@ -46,7 +50,7 @@ SECTIONS
   } > FLASH
 
   /*
-   * Flash: the version record, 64 bytes at a fixed offset (0x08000200), before the first code.
+   * Flash: the version record, 64 bytes at a fixed offset (0x08000400), before the first code.
    * Mark it with section(".version"). Never copied to the SRAM. Not read by the core: the tools
    * read it from the image. The gap between the vector table and the record holds nothing.
    */
@@ -96,7 +100,7 @@ SECTIONS
     PROVIDE_HIDDEN(__fini_array_end = .);
   } > FLASH
 
-  /* SRAM: the vector table copy. At the start of the SRAM, which is aligned far beyond 512 bytes. */
+  /* SRAM: the vector table copy. At the start of the SRAM, which is aligned far beyond 1024 bytes. */
   .vector_ram (NOLOAD) :
   {
     . = ALIGN(_Vector_Alignment);

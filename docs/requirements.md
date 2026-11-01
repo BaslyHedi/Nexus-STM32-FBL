@@ -35,4 +35,4 @@ The statements are in Nexus-Platform and are not restated.
 
 ## Decisions implemented
 
-SW-01 (OpenCyphal), SW-02 (in-house Cyphal stack), SW-03 (C++17 freestanding subset), SW-04 (flash map), SW-05 (SRAM, CCM and FPU), SW-06 (hand-off through the backup SRAM), SW-07 (FBL runs from the SRAM).
+SW-01 (OpenCyphal), SW-02 (in-house Cyphal stack), SW-03 (C++17 freestanding subset), SW-07 (FBL runs from the SRAM), SW-08 (version record, offset 0x400 by SW-11), SW-09 (flash map), SW-10 (SRAM, no FPU, hand-off through the backup SRAM), SW-11 (vector table), HW-22 (the NUCLEO-H533RE).

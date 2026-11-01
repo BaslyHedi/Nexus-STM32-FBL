@@ -6,14 +6,14 @@ The bootloader flashes fast and the application flashes slowly, so the speed alo
 
 | State | Pattern |
 |---|---|
-| FBL idle | Burst chase, below |
+| FBL idle | Burst chase, below (a still burst on the Nucleo's one LED) |
 | FBL receiving | Circle, below |
 | FBL-Updater running | All flash, below |
 | Application running | defined in `Nexus-STM32-App` |
 
 ## The LEDs
 
-Discovery board user LEDs, active high. Seen from above, PD12 to PD15 go round clockwise.
+The four-LED design below was made for the STM32F4DISCOVERY's user LEDs, active high, PD12 to PD15 going round clockwise. The NUCLEO-H533RE has one user LED, LD2 on PA5 (HW-22): `Leds::write` drives it from bit 0 (green) and drops the rest. The patterns are redesigned for the LED strip component, which comes later.
 
 | Pin | LED | Colour | Position |
 |---|---|---|---|

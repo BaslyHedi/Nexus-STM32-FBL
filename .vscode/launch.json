@@ -1,9 +1,10 @@
 {
     /*
-     * Cortex-Debug through OpenOCD and the on-board ST-LINK (tools/openocd/).
+     * Cortex-Debug through ST's OpenOCD fork and the on-board STLINK-V3EC (tools/openocd/).
      *
-     * The FBL runs from the SRAM (SW-07). A Cortex-M4 breakpoint unit only reaches the code region
-     * below 0x20000000, so a breakpoint in the SRAM is a BKPT instruction that GDB writes there.
+     * The FBL runs from the SRAM (SW-07). The Cortex-M4 of the F407 could not set a hardware breakpoint above
+     * 0x20000000. The M33 can (checked on the Nucleo), so this workaround may be dropped; until it is, a
+     * software breakpoint in the SRAM is a BKPT instruction that GDB writes there.
      * Written before the start-up copy, the copy overwrites it. So after the load and after every
      * restart or reset, the post commands below run the start-up code first: OpenOCD stops the
      * core on a hardware breakpoint at __main_veneer, in the flash, after the copy and before main.
@@ -23,7 +24,8 @@
                 "tools/openocd/connect-under-reset.cfg"
             ],
             "gdbPath": "gdb-multiarch",
-            "device": "STM32F407VG",
+            "serverpath": "${userHome}/.local/openocd-st/bin/openocd",
+            "device": "STM32H533RE",
             "preLaunchTask": "FBL: build",
             "runToEntryPoint": "main",
             "postLaunchCommands": [
@@ -60,7 +62,8 @@
                 "tools/openocd/connect-under-reset.cfg"
             ],
             "gdbPath": "gdb-multiarch",
-            "device": "STM32F407VG",
+            "serverpath": "${userHome}/.local/openocd-st/bin/openocd",
+            "device": "STM32H533RE",
             "preLaunchTask": "FBL: build",
             "runToEntryPoint": "main",
             "postLaunchCommands": [
@@ -95,7 +98,8 @@
             "executable": "${workspaceFolder}/build/output/FBL_Nexus_debug.elf",
             "configFiles": ["tools/openocd/fbl.cfg"],
             "gdbPath": "gdb-multiarch",
-            "device": "STM32F407VG"
+            "serverpath": "${userHome}/.local/openocd-st/bin/openocd",
+            "device": "STM32H533RE"
         },
         {
             /* No load and no reset: looks at what runs. The image on the chip must be this variant. */
@@ -107,7 +111,8 @@
             "executable": "${workspaceFolder}/build/output/FBL_Nexus.elf",
             "configFiles": ["tools/openocd/fbl.cfg"],
             "gdbPath": "gdb-multiarch",
-            "device": "STM32F407VG"
+            "serverpath": "${userHome}/.local/openocd-st/bin/openocd",
+            "device": "STM32H533RE"
         }
     ]
 }

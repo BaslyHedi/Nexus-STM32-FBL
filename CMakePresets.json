@@ -3,7 +3,7 @@
   "configurePresets": [
     {
       "name": "fbl",
-      "displayName": "FBL for the STM32F407",
+      "displayName": "FBL for the STM32H533",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build",
       "toolchainFile": "${sourceDir}/cmake/toolchain-arm-none-eabi.cmake",

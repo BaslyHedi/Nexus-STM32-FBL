@@ -1,6 +1,6 @@
 # Nexus-STM32-FBL
 
-The bare-metal flash bootloader of the STM32F407: receives an application image over Cyphal/CAN, verifies it and jumps to it (SW-01).
+The bare-metal flash bootloader of the STM32H533 (NUCLEO-H533RE, HW-22): receives an application image over Cyphal/CAN, verifies it and jumps to it (SW-01).
 
 Consumes a Nexus-CAN-Utils release for the bootloader identifiers. Small by design: no RTOS.
 

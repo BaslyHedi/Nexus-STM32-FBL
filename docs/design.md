@@ -6,15 +6,16 @@ Boot flow and the update state machine. Written as the design is made. Decisions
 
 | Topic | Decision |
 |---|---|
-| Flash map | FBL sectors 0 to 4, `0x08000000` to `0x0801FFFF` (128 KB). Application sectors 5 to 11, from `0x08020000` (896 KB). SW-04 |
-| RAM | Main SRAM only, CCM empty. SW-05 |
+| Flash map | STM32H533RE, 512 KB in two banks, no bank swap. Bank 1: FBL sectors 0-15 `0x08000000` (128 KB), CFG sector 16 `0x08020000` (8 KB), NvM sectors 17-22 `0x08022000` (48 KB), reserve sectors 23-31 `0x0802E000` (72 KB). Bank 2: application sectors 32-63 `0x08040000` (256 KB), all of it. Details in `interface/linker/memory_map.ld`. SW-09 |
+| RAM | SRAM1 128 KB at `0x20000000`. SRAM2 and SRAM3 left to the application. SW-10 |
 | Floating point | None in the FBL. SW-05 |
-| Hand-over from the application | Backup SRAM `0x40024000`, first 512 bytes. SW-06 |
-| Where the FBL runs | From the SRAM, stored in the flash. SW-07 |
+| Hand-over from the application | Backup SRAM `0x40036400`, first 512 bytes of 2 KB. SW-10 |
+| Where the FBL runs | From the SRAM, stored in the flash. SW-07, SW-11 |
+| Version record | At offset `0x400`: the 149-vector table is 596 bytes. SW-11 |
 
 ## Open
 
-How a valid application is recognised, the entry rules, the layout of the hand-off record, how this repository takes a `Nexus-CAN-Utils` tag, NvM and configuration data (Phase 2).
+How a valid application is recognised, the entry rules, the layout of the hand-off record, how this repository takes a `Nexus-CAN-Utils` tag, the content and interface of CFG and NvM (shared with the application).
 
 ## Sources
 
@@ -22,7 +23,7 @@ Not committed. On the author's machine they are in the untracked `vendor/datashe
 
 | Document | Revision | Folder |
 |---|---|---|
-| RM0090, reference manual STM32F405/415, F407/417, F427/437, F429/439 | Rev 22 | `1.2-STM32F407-Discovery/` |
-| DS8626, datasheet STM32F405xx, STM32F407xx | Rev 8 (DocID022152) | `1.2-STM32F407-Discovery/` |
-| PM0214, STM32 Cortex-M4 MCUs and MPUs programming manual | Rev 10 | `1.2-STM32F407-Discovery/` |
+| RM0481, reference manual STM32H523/533, H562/563/573, H543/553 | Rev 5 | `1.2-NUCLEO-H533RE/` |
+| DS14539, datasheet STM32H533xx | Rev 3 | `1.2-NUCLEO-H533RE/` |
+| UM3121, STM32H5 Nucleo-64 boards (MB1814) | | `1.2-NUCLEO-H533RE/` |
 | Cyphal Specification v1.0 | 2025-05-16 | `4.1-Software/` |
