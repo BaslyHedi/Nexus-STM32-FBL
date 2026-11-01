@@ -4,7 +4,7 @@
  */
 
 /**
- * @file      drivers/stm32f407/tick/tick.cpp
+ * @file      drivers/stm32h533/tick/tick.cpp
  * @brief     Millisecond time base from the SysTick interrupt.
  *
  * Element:   Nexus-Physical-01-04 (bootloader)
@@ -14,13 +14,13 @@
  * SRAM (SW-07), which VTOR points to before main.
  */
 
-#include "stm32f407/tick/tick.hpp"
+#include "stm32h533/tick/tick.hpp"
 
-#include "stm32f4xx.h"
+#include "stm32h533xx.h"
 
 namespace {
 
-/* Written by the interrupt, read by the main loop. A 32-bit read is one LDR on the M4: atomic. */
+/* Written by the interrupt, read by the main loop. A 32-bit read is one LDR on the M33: atomic. */
 volatile std::uint32_t milliseconds = 0U;
 
 }  /* namespace */
@@ -33,7 +33,7 @@ extern "C" void SysTick_Handler()
     milliseconds = milliseconds + 1U;
 }
 
-namespace nexus::fbl::stm32f407 {
+namespace nexus::fbl::stm32h533 {
 
 void Tick::init(std::uint32_t coreClockHz)
 {
@@ -54,4 +54,4 @@ std::uint32_t Tick::now()
     return milliseconds;
 }
 
-}  /* namespace nexus::fbl::stm32f407 */
+}  /* namespace nexus::fbl::stm32h533 */

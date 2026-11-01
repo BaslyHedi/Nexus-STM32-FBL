@@ -4,7 +4,7 @@
  */
 
 /**
- * @file      drivers/stm32f407/tick/tick.hpp
+ * @file      drivers/stm32h533/tick/tick.hpp
  * @brief     Millisecond time base from the SysTick interrupt.
  *
  * Element:   Nexus-Physical-01-04 (bootloader)
@@ -14,18 +14,18 @@
  * stays correct across the wrap.
  */
 
-#ifndef NEXUS_DRIVERS_STM32F407_TICK_TICK_HPP
-#define NEXUS_DRIVERS_STM32F407_TICK_TICK_HPP
+#ifndef NEXUS_DRIVERS_STM32H533_TICK_TICK_HPP
+#define NEXUS_DRIVERS_STM32H533_TICK_TICK_HPP
 
 #include <cstdint>
 
-namespace nexus::fbl::stm32f407 {
+namespace nexus::fbl::stm32h533 {
 
 struct Tick {
     static void init(std::uint32_t coreClockHz);
     static std::uint32_t now();
 };
 
-}  /* namespace nexus::fbl::stm32f407 */
+}  /* namespace nexus::fbl::stm32h533 */
 
 #endif

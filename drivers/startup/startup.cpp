@@ -5,21 +5,22 @@
 
 /**
  * @file      drivers/startup/startup.cpp
- * @brief     Vector table and reset sequence of the STM32F407 FBL.
+ * @brief     Vector table and reset sequence of the STM32H533 FBL.
  *
  * Element:   Nexus-Physical-01-04 (bootloader)
  * Decisions: SW-03, SW-07
  *
  * The FBL is stored in the flash and executes from the SRAM (SW-07). The table below and the code
  * in .boot_text are the only parts used from the flash. The link-time layout and the steps are in
- * linker/README.md and linker/fbl.ld. ST's startup_stm32f407xx.s is not used: it copies only .data
- * and calls SystemInit from the flash. It was the reference for the order of the 98 vectors.
+ * linker/README.md and linker/fbl.ld. ST's startup_stm32h533xx.s is not used: it copies only .data
+ * and calls SystemInit from the flash. The order of the 133 interrupts is that of IRQn_Type in
+ * stm32h533xx.h, with a ReservedN handler for each number the header leaves out.
  */
 
 #include <cstddef>
 #include <cstdint>
 
-#include "stm32f4xx.h"
+#include "stm32h533xx.h"
 
 /* Symbols of linker/fbl.ld. */
 extern "C" {
@@ -65,27 +66,29 @@ union VectorEntry {
 /*
  * Every handler a driver may define. A handler that is not defined is the weak alias of Default_Handler.
  * A macro because the same list declares the aliases and fills the table: written twice by hand, the two would drift.
- * Reserved79 is the vector the F407 does not use (CRYP on the F417).
+ * One entry per interrupt number 0 to 132 (RM0481 Table 153); ReservedN is a number with no peripheral.
  * clang-format off
  */
 #define NEXUS_IRQ_HANDLERS(X) \
-    X(WWDG) X(PVD) X(TAMP_STAMP) X(RTC_WKUP) X(FLASH) X(RCC) \
-    X(EXTI0) X(EXTI1) X(EXTI2) X(EXTI3) X(EXTI4) \
-    X(DMA1_Stream0) X(DMA1_Stream1) X(DMA1_Stream2) X(DMA1_Stream3) \
-    X(DMA1_Stream4) X(DMA1_Stream5) X(DMA1_Stream6) \
-    X(ADC) X(CAN1_TX) X(CAN1_RX0) X(CAN1_RX1) X(CAN1_SCE) X(EXTI9_5) \
-    X(TIM1_BRK_TIM9) X(TIM1_UP_TIM10) X(TIM1_TRG_COM_TIM11) X(TIM1_CC) \
-    X(TIM2) X(TIM3) X(TIM4) \
-    X(I2C1_EV) X(I2C1_ER) X(I2C2_EV) X(I2C2_ER) X(SPI1) X(SPI2) \
-    X(USART1) X(USART2) X(USART3) X(EXTI15_10) X(RTC_Alarm) X(OTG_FS_WKUP) \
-    X(TIM8_BRK_TIM12) X(TIM8_UP_TIM13) X(TIM8_TRG_COM_TIM14) X(TIM8_CC) \
-    X(DMA1_Stream7) X(FSMC) X(SDIO) X(TIM5) X(SPI3) X(UART4) X(UART5) \
-    X(TIM6_DAC) X(TIM7) \
-    X(DMA2_Stream0) X(DMA2_Stream1) X(DMA2_Stream2) X(DMA2_Stream3) X(DMA2_Stream4) \
-    X(ETH) X(ETH_WKUP) X(CAN2_TX) X(CAN2_RX0) X(CAN2_RX1) X(CAN2_SCE) X(OTG_FS) \
-    X(DMA2_Stream5) X(DMA2_Stream6) X(DMA2_Stream7) X(USART6) X(I2C3_EV) X(I2C3_ER) \
-    X(OTG_HS_EP1_OUT) X(OTG_HS_EP1_IN) X(OTG_HS_WKUP) X(OTG_HS) X(DCMI) \
-    X(Reserved79) X(HASH_RNG) X(FPU)
+    X(WWDG) X(PVD_AVD) X(RTC) X(RTC_S) X(TAMP) X(RAMCFG) X(FLASH) X(FLASH_S) X(GTZC) X(RCC) \
+    X(RCC_S) X(EXTI0) X(EXTI1) X(EXTI2) X(EXTI3) X(EXTI4) X(EXTI5) X(EXTI6) X(EXTI7) X(EXTI8) \
+    X(EXTI9) X(EXTI10) X(EXTI11) X(EXTI12) X(EXTI13) X(EXTI14) X(EXTI15) X(GPDMA1_Channel0) \
+    X(GPDMA1_Channel1) X(GPDMA1_Channel2) X(GPDMA1_Channel3) X(GPDMA1_Channel4) \
+    X(GPDMA1_Channel5) X(GPDMA1_Channel6) X(GPDMA1_Channel7) X(IWDG) X(SAES) X(ADC1) X(DAC1) \
+    X(FDCAN1_IT0) X(FDCAN1_IT1) X(TIM1_BRK) X(TIM1_UP) X(TIM1_TRG_COM) X(TIM1_CC) X(TIM2) \
+    X(TIM3) X(TIM4) X(TIM5) X(TIM6) X(TIM7) X(I2C1_EV) X(I2C1_ER) X(I2C2_EV) X(I2C2_ER) X(SPI1) \
+    X(SPI2) X(SPI3) X(USART1) X(USART2) X(USART3) X(UART4) X(UART5) X(LPUART1) X(LPTIM1) \
+    X(TIM8_BRK) X(TIM8_UP) X(TIM8_TRG_COM) X(TIM8_CC) X(ADC2) X(LPTIM2) X(TIM15) X(Reserved72) \
+    X(Reserved73) X(USB_DRD_FS) X(CRS) X(UCPD1) X(FMC) X(OCTOSPI1) X(SDMMC1) X(I2C3_EV) \
+    X(I2C3_ER) X(SPI4) X(Reserved83) X(Reserved84) X(USART6) X(Reserved86) X(Reserved87) \
+    X(Reserved88) X(Reserved89) X(GPDMA2_Channel0) X(GPDMA2_Channel1) X(GPDMA2_Channel2) \
+    X(GPDMA2_Channel3) X(GPDMA2_Channel4) X(GPDMA2_Channel5) X(GPDMA2_Channel6) \
+    X(GPDMA2_Channel7) X(Reserved98) X(Reserved99) X(Reserved100) X(Reserved101) X(Reserved102) \
+    X(FPU) X(ICACHE) X(DCACHE1) X(Reserved106) X(Reserved107) X(DCMI_PSSI) X(FDCAN2_IT0) \
+    X(FDCAN2_IT1) X(Reserved111) X(Reserved112) X(DTS) X(RNG) X(OTFDEC1) X(AES) X(HASH) X(PKA) \
+    X(CEC) X(TIM12) X(Reserved121) X(Reserved122) X(I3C1_EV) X(I3C1_ER) X(Reserved125) \
+    X(Reserved126) X(Reserved127) X(Reserved128) X(Reserved129) X(Reserved130) X(I3C2_EV) \
+    X(I3C2_ER)
 /* clang-format on */
 
 #define NEXUS_DECLARE_WEAK_IRQ(name) \
@@ -94,7 +97,7 @@ union VectorEntry {
 NEXUS_IRQ_HANDLERS(NEXUS_DECLARE_WEAK_IRQ)
 
 /*
- * System handlers (PM0214 table 12). Reset has its own definition below.
+ * System handlers (Armv8-M exception numbers 2 to 15). Reset has its own definition below.
  * NMI and the faults default to Fault_Handler, which is in the flash: until the copy is done,
  * the table is the one in the flash and a handler in the SRAM would be unprogrammed memory.
  */
@@ -104,6 +107,7 @@ void HardFault_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
 void MemManage_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
 void BusFault_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
 void UsageFault_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
+void SecureFault_Handler() noexcept __attribute__((weak, alias("Fault_Handler")));
 void SVC_Handler() __attribute__((weak, alias("Default_Handler")));
 void DebugMon_Handler() __attribute__((weak, alias("Default_Handler")));
 void PendSV_Handler() __attribute__((weak, alias("Default_Handler")));
@@ -114,7 +118,7 @@ namespace {
 
 #define NEXUS_VECTOR_ENTRY(name) VectorEntry(name##_IRQHandler),
 
-constexpr std::size_t kVectorCount = 98;  /* 16 system + 82 interrupts (RM0090 Rev 22) */
+constexpr std::size_t kVectorCount = 149;  /* 16 system + 133 interrupts (RM0481 Table 153) */
 
 /* fbl.ld puts .isr_vector at the start of the flash and keeps it. */
 [[gnu::section(".isr_vector"), gnu::used]] const VectorEntry kVectorTable[] = {
@@ -125,7 +129,7 @@ constexpr std::size_t kVectorCount = 98;  /* 16 system + 82 interrupts (RM0090 R
     VectorEntry(MemManage_Handler),                      /*  4 */
     VectorEntry(BusFault_Handler),                       /*  5 */
     VectorEntry(UsageFault_Handler),                     /*  6 */
-    VectorEntry(Handler{nullptr}),                       /*  7 reserved */
+    VectorEntry(SecureFault_Handler),                    /*  7 */
     VectorEntry(Handler{nullptr}),                       /*  8 reserved */
     VectorEntry(Handler{nullptr}),                       /*  9 reserved */
     VectorEntry(Handler{nullptr}),                       /* 10 reserved */
@@ -134,10 +138,10 @@ constexpr std::size_t kVectorCount = 98;  /* 16 system + 82 interrupts (RM0090 R
     VectorEntry(Handler{nullptr}),                       /* 13 reserved */
     VectorEntry(PendSV_Handler),                         /* 14 */
     VectorEntry(SysTick_Handler),                        /* 15 */
-    NEXUS_IRQ_HANDLERS(NEXUS_VECTOR_ENTRY)               /* 16 to 97 */
+    NEXUS_IRQ_HANDLERS(NEXUS_VECTOR_ENTRY)               /* 16 to 148 */
 };
 
-static_assert(sizeof(kVectorTable) == kVectorCount * sizeof(VectorEntry), "the F407 has 98 vectors");
+static_assert(sizeof(kVectorTable) == kVectorCount * sizeof(VectorEntry), "the H533 has 149 vectors");
 static_assert(sizeof(VectorEntry) == 4U, "a vector is one 32-bit word");
 
 /*
@@ -216,7 +220,7 @@ void Default_Handler()
     copyWords(__ram_image_start, __ram_image_load, __ram_image_end);
     copyWords(__vector_ram, __isr_vector_load, __vector_ram_end);
 
-    /* The copy of the table is complete before VTOR points at it (PM0214 section 4.3.10). */
+    /* The copy of the table is complete before VTOR points at it (Armv8-M, VTOR). */
     __DSB();
     SCB->VTOR = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(__vector_ram));
     __DSB();

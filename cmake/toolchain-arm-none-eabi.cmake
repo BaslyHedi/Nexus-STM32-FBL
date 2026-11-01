@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hedi Basly
 #
 # File:      cmake/toolchain-arm-none-eabi.cmake
-# Brief:     Cross-compilation for the STM32F407 (Cortex-M4, no FPU).
+# Brief:     Cross-compilation for the STM32H533 (Cortex-M33, no FPU used).
 # Element:   Nexus-Physical-01-04 (bootloader)
 # Decisions: SW-05
 #
@@ -27,7 +27,7 @@ endforeach()
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 # Only the CPU flags live here, every project target needs them. The rest is in compile-options.cmake.
-set(NEXUS_CPU_FLAGS -mcpu=cortex-m4 -mthumb -mfloat-abi=soft)
+set(NEXUS_CPU_FLAGS -mcpu=cortex-m33 -mthumb -mfloat-abi=soft)
 string(JOIN " " _nexus_cpu_flags ${NEXUS_CPU_FLAGS})
 set(CMAKE_CXX_FLAGS_INIT ${_nexus_cpu_flags})
 set(CMAKE_EXE_LINKER_FLAGS_INIT ${_nexus_cpu_flags})

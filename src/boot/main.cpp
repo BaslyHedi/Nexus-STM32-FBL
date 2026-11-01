@@ -18,8 +18,8 @@
 #include <cstdint>
 #include <type_traits>
 
-#include "stm32f407/leds/leds.hpp"
-#include "stm32f407/tick/tick.hpp"
+#include "stm32h533/leds/leds.hpp"
+#include "stm32h533/tick/tick.hpp"
 #include "leds/patterns.hpp"
 #include "leds/player.hpp"
 
@@ -47,11 +47,11 @@ int main();
 int main()
 {
     using nexus::fbl::leds::Player;
-    using nexus::fbl::stm32f407::Leds;
-    using nexus::fbl::stm32f407::Tick;
+    using nexus::fbl::stm32h533::Leds;
+    using nexus::fbl::stm32h533::Tick;
 
-    /* Reset clock: HSI, 16 MHz, until the clock driver exists. */
-    constexpr std::uint32_t coreClockHz = 16000000U;
+    /* Reset clock: HSI, 32 MHz (HSIDIV = 2, RM0481 section 11.4.2), until the clock driver exists. */
+    constexpr std::uint32_t coreClockHz = 32000000U;
 
     Leds::init();
     Tick::init(coreClockHz);
