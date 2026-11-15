@@ -22,6 +22,8 @@ namespace nexus::fbl::stm32h533 {
 namespace {
 
 constexpr std::uint32_t ld2Pin = 5U;
+/* The level of LED 1 in a frame, bits 0 to 3 (docs/led-patterns.md). */
+constexpr std::uint32_t led1LevelMask = 0xFU;
 
 }  /* namespace */
 
@@ -39,10 +41,10 @@ void Leds::init()
     GPIOA->MODER = (GPIOA->MODER & ~GPIO_MODER_MODE5_Msk) | GPIO_MODER_MODE5_0;
 }
 
-void Leds::write(std::uint32_t mask)
+void Leds::write(std::uint32_t frame)
 {
     /* BSRR: the low half sets pins, the high half resets them, in one write. */
-    GPIOA->BSRR = ((mask & 1U) != 0U) ? (1U << ld2Pin) : (1U << (ld2Pin + 16U));
+    GPIOA->BSRR = ((frame & led1LevelMask) != 0U) ? (1U << ld2Pin) : (1U << (ld2Pin + 16U));
 }
 
 }  /* namespace nexus::fbl::stm32h533 */

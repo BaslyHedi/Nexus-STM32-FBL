@@ -10,7 +10,7 @@
  * Element:   Nexus-Physical-01-04 (bootloader)
  * Decisions: none
  *
- * The player does not drive the LEDs: it says which mask is due, and the caller writes it. That
+ * The player does not drive the LEDs: it says which frame is due, and the caller writes it. That
  * keeps it free of the hardware, so a host test can drive it with any sequence of times.
  */
 
@@ -31,10 +31,10 @@ public:
     /* A temporary would be gone before the next update: refused at compile time. */
     void start(const Pattern&& pattern, std::uint32_t nowMs) = delete;
 
-    /* Advances to the step due at nowMs. True when the mask changed. */
+    /* Advances to the step due at nowMs. True when the frame changed. */
     bool update(std::uint32_t nowMs) noexcept;
 
-    std::uint32_t mask() const noexcept { return mask_; }
+    std::uint32_t frame() const noexcept { return frame_; }
 
 private:
     void show() noexcept;
@@ -43,7 +43,7 @@ private:
     std::size_t index_ = 0U;
     std::uint32_t turn_ = 0U;
     std::uint32_t stepStartMs_ = 0U;
-    std::uint32_t mask_ = 0U;
+    std::uint32_t frame_ = 0U;
 };
 
 }  /* namespace nexus::fbl::leds */

@@ -10,8 +10,9 @@
  * Element:   Nexus-Physical-01-04 (bootloader)
  * Decisions: HW-22
  *
- * Temporary: plays the FBL idle pattern on LD2 (T1.3) until the update state machine exists. Only
- * bit 0 of the pattern reaches the Nucleo's single LED; the LED strip patterns come later.
+ * Temporary: plays the FBL idle pattern (T1.3) until the update state machine exists. Two players
+ * start on the same tick, one for LD2 and one for the LED stick. Only LD2 is driven: the stick's
+ * frames wait for its driver.
  */
 
 #include <cstdint>
@@ -36,13 +37,19 @@ int main()
     Leds::init();
     Tick::init(coreClockHz);
 
-    Player player;
-    player.start(nexus::fbl::leds::idle, Tick::now());
-    Leds::write(player.mask());
+    Player ld2;
+    Player stick;
+    const std::uint32_t startMs = Tick::now();
+    ld2.start(nexus::fbl::leds::idleLd2, startMs);
+    stick.start(nexus::fbl::leds::idleStick, startMs);
+    Leds::write(ld2.frame());
 
     for (;;) {
-        if (player.update(Tick::now())) {
-            Leds::write(player.mask());
+        const std::uint32_t nowMs = Tick::now();
+        if (ld2.update(nowMs)) {
+            Leds::write(ld2.frame());
         }
+        /* No driver for the stick yet: its frame is computed and not sent. */
+        static_cast<void>(stick.update(nowMs));
     }
 }

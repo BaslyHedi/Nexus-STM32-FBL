@@ -11,7 +11,8 @@
  * Decisions: SW-03
  *
  * The patterns are defined in docs/led-patterns.md. Each table has one row per step of the table
- * there, so the two can be compared line by line.
+ * there, so the two can be compared line by line. A step holds a frame of eight 4-bit levels, one
+ * per LED of the stick; LD2 shows LED 1. The colour is not part of a pattern: LD2 has none.
  */
 
 #ifndef NEXUS_SRC_LEDS_PATTERNS_HPP
@@ -22,14 +23,19 @@
 
 namespace nexus::fbl::leds {
 
-/* One step: which LEDs are on, and for how long. Bit 0 to bit 3 are green, orange, red, blue. */
+/* The stick has eight LEDs; a frame holds one 4-bit level per LED, LED 1 in bits 0 to 3. */
+inline constexpr std::uint32_t ledCount = 8U;
+inline constexpr std::uint32_t levelBits = 4U;
+inline constexpr std::uint32_t levelMask = 0xFU;
+
+/* One step: the level of each LED, and for how long. Level 0 is off, 15 the full colour. */
 struct Step {
-    std::uint32_t mask;
+    std::uint32_t frame;
     std::uint32_t durationMs;
 };
 
-/* still: the steps are played as written. chase: at the end of each pass every mask moves one LED
- * clockwise, so the table holds the part of the first LED only. */
+/* still: the steps are played as written. chase: at the end of each pass every level moves on one
+ * LED, towards LED 8, so the table holds the part of the first pass only. */
 enum class Motion { still, chase };
 
 /* A pattern: a fixed table of steps, played in order and repeated. */
@@ -52,6 +58,31 @@ private:
     Motion motion_;
 };
 
+/* The level of one LED, led counted from 0 (LED 1). */
+constexpr std::uint32_t level(std::uint32_t frame, std::uint32_t led) noexcept
+{
+    return (frame >> (led * levelBits)) & levelMask;
+}
+
+/*
+ * Moves every level turn LEDs on, towards LED 8, LED 8 wrapping to LED 1. Turn 0 is returned as it
+ * is: the rotation would otherwise shift a 32-bit value by 32, which is undefined behaviour.
+ */
+constexpr std::uint32_t chase(std::uint32_t frame, std::uint32_t turn) noexcept
+{
+    const std::uint32_t shift = (turn % ledCount) * levelBits;
+    if (shift == 0U) {
+        return frame;
+    }
+    return (frame << shift) | (frame >> ((ledCount * levelBits) - shift));
+}
+
+static_assert(chase(0x6200000FU, 1U) == 0x200000F6U, "chase: the comet moves on one LED");
+static_assert(chase(0x0000000FU, 7U) == 0xF0000000U, "chase: LED 1 reaches LED 8 in seven turns");
+static_assert(chase(0x6200000FU, 8U) == 0x6200000FU, "chase: eight turns bring the frame back");
+static_assert(chase(0x6200000FU, 0U) == 0x6200000FU, "chase: turn 0 leaves the frame as it is");
+static_assert(level(0x6200000FU, 7U) == 6U, "level: LED 8 is bits 28 to 31");
+
 /* The time of one pass through the table. */
 constexpr std::uint32_t passDurationMs(const Pattern& pattern) noexcept
 {
@@ -62,64 +93,77 @@ constexpr std::uint32_t passDurationMs(const Pattern& pattern) noexcept
     return total;
 }
 
-/* True when no mask names a fifth LED. */
-constexpr bool usesFourLeds(const Pattern& pattern) noexcept
+/* True when LD2, which shows only LED 1, sees the pattern switch both on and off. */
+constexpr bool blinksOnLd2(const Pattern& pattern) noexcept
 {
+    bool on = false;
+    bool off = false;
     for (std::size_t i = 0U; i < pattern.size(); ++i) {
-        if ((pattern.step(i).mask & ~0xFU) != 0U) {
-            return false;
+        if (level(pattern.step(i).frame, 0U) != 0U) {
+            on = true;
+        } else {
+            off = true;
         }
     }
-    return true;
+    return on && off;
 }
 
-/*
- * FBL idle: the burst. Still on the Nucleo, whose one LED would show only one pass in four of a
- * chase; the strip brings the chase back (docs/led-patterns.md).
- */
+/* FBL idle: the burst. Chased on the stick, still on LD2, from the same table. */
 inline constexpr Step idleSteps[] = {
-    {0b0001U, 70U},
-    {0b0000U, 30U},
-    {0b0001U, 70U},
-    {0b0000U, 30U},
-    {0b0001U, 70U},
-    {0b0000U, 30U},
-    {0b0001U, 70U},
-    {0b0000U, 30U},
-    {0b0001U, 70U},
-    {0b0000U, 30U},
-    {0b0001U, 70U},
-    {0b0000U, 230U},
+    {0x0000000FU, 70U},
+    {0x00000000U, 30U},
+    {0x0000000FU, 70U},
+    {0x00000000U, 30U},
+    {0x0000000FU, 70U},
+    {0x00000000U, 30U},
+    {0x0000000FU, 70U},
+    {0x00000000U, 30U},
+    {0x0000000FU, 70U},
+    {0x00000000U, 30U},
+    {0x0000000FU, 70U},
+    {0x00000000U, 230U},
 };
 
-inline constexpr Pattern idle{idleSteps, Motion::still};
+inline constexpr Pattern idleStick{idleSteps, Motion::chase};
+inline constexpr Pattern idleLd2{idleSteps, Motion::still};
 
-static_assert(idle.size() == 12U, "FBL idle: twelve steps, docs/led-patterns.md");
-static_assert(passDurationMs(idle) == 800U, "FBL idle: a burst lasts 800 ms, docs/led-patterns.md");
-static_assert(usesFourLeds(idle), "FBL idle: four LEDs only");
+static_assert(idleStick.size() == 12U, "FBL idle: twelve steps, docs/led-patterns.md");
+static_assert(passDurationMs(idleStick) == 800U, "FBL idle: a burst lasts 800 ms, docs/led-patterns.md");
+static_assert(blinksOnLd2(idleLd2), "FBL idle: LD2 blinks");
 
-/* FBL receiving: the circle. One step on the first LED, moved on by the chase every pass. */
-inline constexpr Step receivingSteps[] = {
-    {0b0001U, 100U},
+/* FBL receiving: the comet on the stick, head on LED 1, tail on LED 8 and LED 7. */
+inline constexpr Step receivingStickSteps[] = {
+    {0x6200000FU, 100U},
 };
 
-inline constexpr Pattern receiving{receivingSteps, Motion::chase};
+inline constexpr Pattern receivingStick{receivingStickSteps, Motion::chase};
 
-static_assert(receiving.size() == 1U, "FBL receiving: one step, docs/led-patterns.md");
-static_assert(passDurationMs(receiving) == 100U, "FBL receiving: 100 ms per LED, docs/led-patterns.md");
-static_assert(usesFourLeds(receiving), "FBL receiving: four LEDs only");
+static_assert(receivingStick.size() == 1U, "FBL receiving: one step on the stick, docs/led-patterns.md");
+static_assert(passDurationMs(receivingStick) == 100U, "FBL receiving: 100 ms per LED, docs/led-patterns.md");
 
-/* FBL-Updater: all four flash together. */
+/* FBL receiving on LD2: 100 ms on, 300 ms off, what LD2 showed of the four-LED circle. */
+inline constexpr Step receivingLd2Steps[] = {
+    {0x0000000FU, 100U},
+    {0x00000000U, 300U},
+};
+
+inline constexpr Pattern receivingLd2{receivingLd2Steps, Motion::still};
+
+static_assert(receivingLd2.size() == 2U, "FBL receiving: two steps on LD2, docs/led-patterns.md");
+static_assert(passDurationMs(receivingLd2) == 400U, "FBL receiving: 100 ms on, 300 ms off on LD2, docs/led-patterns.md");
+static_assert(blinksOnLd2(receivingLd2), "FBL receiving: LD2 blinks");
+
+/* FBL-Updater: all eight flash together, LD2 with them. One pattern for both. */
 inline constexpr Step updaterSteps[] = {
-    {0b1111U, 100U},
-    {0b0000U, 100U},
+    {0xFFFFFFFFU, 100U},
+    {0x00000000U, 100U},
 };
 
 inline constexpr Pattern updater{updaterSteps, Motion::still};
 
 static_assert(updater.size() == 2U, "FBL-Updater: two steps, docs/led-patterns.md");
 static_assert(passDurationMs(updater) == 200U, "FBL-Updater: 100 ms on, 100 ms off, docs/led-patterns.md");
-static_assert(usesFourLeds(updater), "FBL-Updater: four LEDs only");
+static_assert(blinksOnLd2(updater), "FBL-Updater: LD2 blinks");
 
 }  /* namespace nexus::fbl::leds */
 

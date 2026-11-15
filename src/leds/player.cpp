@@ -15,19 +15,6 @@
 
 namespace nexus::fbl::leds {
 
-namespace {
-
-constexpr std::uint32_t ledCount = 4U;
-constexpr std::uint32_t allLeds = 0xFU;
-
-/* Moves every LED of the mask turn places clockwise, blue wrapping round to green. */
-std::uint32_t rotate(std::uint32_t mask, std::uint32_t turn) noexcept
-{
-    return ((mask << turn) | (mask >> (ledCount - turn))) & allLeds;
-}
-
-}  /* namespace */
-
 void Player::start(const Pattern& pattern, std::uint32_t nowMs) noexcept
 {
     pattern_ = &pattern;
@@ -43,7 +30,7 @@ bool Player::update(std::uint32_t nowMs) noexcept
         return false;
     }
 
-    const std::uint32_t before = mask_;
+    const std::uint32_t before = frame_;
 
     /* while and not if: after a stall the player walks through the missed steps and is on time
      * again, instead of running late from then on. */
@@ -59,12 +46,12 @@ bool Player::update(std::uint32_t nowMs) noexcept
     }
 
     show();
-    return mask_ != before;
+    return frame_ != before;
 }
 
 void Player::show() noexcept
 {
-    mask_ = rotate(pattern_->step(index_).mask, turn_);
+    frame_ = chase(pattern_->step(index_).frame, turn_);
 }
 
 }  /* namespace nexus::fbl::leds */
