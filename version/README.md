@@ -1,6 +1,6 @@
 # Version
 
-The version record of the image: 64 bytes at a fixed address, readable with `strings` on the `.elf`, or at `0x08000200` in a hex or SREC dump.
+The version record of the image: 64 bytes at a fixed address, readable with `strings` on the `.elf`, or at `0x08000400` in a hex or SREC dump.
 
 | Offset | Size | Content | Now |
 |---|---|---|---|

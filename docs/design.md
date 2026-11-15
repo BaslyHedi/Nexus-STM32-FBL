@@ -12,6 +12,9 @@ Boot flow and the update state machine. Written as the design is made. Decisions
 | Hand-over from the application | Backup SRAM `0x40036400`, first 512 bytes of 2 KB. SW-10 |
 | Where the FBL runs | From the SRAM, stored in the flash. SW-07, SW-11 |
 | Version record | At offset `0x400`: the 149-vector table is 596 bytes. SW-11 |
+| Where the memory map is written | Once, in a C header of `interface/`; the linker script is preprocessed from it. SW-12 |
+| Image size | Asked with `uavcan.file.GetInfo` before the erase; an image larger than the application region is rejected before anything is erased ([cyphal-scope.md](cyphal-scope.md)) |
+| LED patterns | Four states on LD2 and the 8-LED stick ([led-patterns.md](led-patterns.md)) |
 
 ## Open
 
