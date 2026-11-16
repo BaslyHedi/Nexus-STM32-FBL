@@ -21,6 +21,7 @@
 #include "stm32h533/tick/tick.hpp"
 #include "leds/patterns.hpp"
 #include "leds/player.hpp"
+#include "leds/looks.hpp"
 
 /* With -ffreestanding main is not special to the compiler, so -Wmissing-declarations wants this. */
 int main();
